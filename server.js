@@ -6,6 +6,7 @@ const session        = require('express-session');
 require('./db/db')
 
 const petController = require('./controllers/petController')
+const userController = require('./controllers/userController')
 
 // middleware
 app.use(bodyParser.urlencoded({extended: false}));
@@ -20,6 +21,7 @@ app.use(session({
 }))
 
 app.use('/pets', petController);
+app.use('/users', petController);
 
 app.listen(3000, () => {
   console.log('listening... on port: ', 3000);
