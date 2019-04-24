@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>User Index Page</title>
+        <link rel="stylesheet" type="text/css" href="http://localhost:3000/static/style.css">
+        <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    </head>
+    <body>
+
+        <% if (logged === undefined) {%>
+            <a href="/users/new">Login/Register</a>
+
+        <% } else {%>
+            <p><%=username%> Is Logged In</p>
+            <a href="/users/logout">Log Out</a>
+        <%}%>
+        <div class="container">
+            <div class="header-container">
+                <h1>Index Page</h1>    
+
+            </div>
+            <section>
+                <a href="/users">Home</a>
+
+            </section>
+            <h1>Pets</h1>
+            <ul>
+                <% for(let i = 0; i < pets.length; i++){ %>
+                    <li>
+                        <a href="/users/<%=pets[i]._id%>"><img src="<%=pets[i].photo%>"></a></br>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </body>
+</html>

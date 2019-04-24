@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const User   = require('../models/user');
+const Pet = require('../models/pet')
 const bcrypt = require('bcryptjs')
 
 
 // login and register route
 router.get('/new', (req, res) => {
-	res.render('new.ejs', {
+	res.render('user/new.ejs', {
 		message: req.session.message
 	})		
 })
@@ -81,6 +82,23 @@ router.post('/new', async (req, res, next) => {
   }
 
 })  
+
+//index route
+
+router.get('/', async (req, res, next) => {
+	try {
+		const foundPets = await Pet.find({})
+		res.render('user/index.ejs', {
+			pets: foundPets,
+			logged: req.session.logged,
+			username: req.session.username
+
+		})
+	} catch (err) {
+		next(err)
+	}				
+})
+
 
 
 
