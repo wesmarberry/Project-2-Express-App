@@ -21,7 +21,7 @@ app.use(session({
 }))
 
 app.use('/pets', petController);
-app.use('/users', petController);
+app.use('/users', userController);
 
 app.listen(3000, () => {
   console.log('listening... on port: ', 3000);
