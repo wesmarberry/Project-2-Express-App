@@ -1,0 +1,28 @@
+{
+  "name": "pup-finder",
+  "version": "1.0.0",
+  "description": "Project Wireframe: https://imgur.com/a/EI7BZAs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wesmarberry/Project-2-Express-App.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wesmarberry/Project-2-Express-App/issues"
+  },
+  "homepage": "https://github.com/wesmarberry/Project-2-Express-App#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-session": "^1.16.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.5.3"
+  }
+}
