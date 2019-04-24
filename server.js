@@ -5,7 +5,7 @@ const methodOverride = require('method-override');
 const session        = require('express-session');
 require('./db/db')
 
-const userController = require('./controllers/userController')
+const petController = require('./controllers/petController')
 
 // middleware
 app.use(bodyParser.urlencoded({extended: false}));
@@ -19,8 +19,7 @@ app.use(session({
   //this is what should be done for logins, many laws make you do this as well
 }))
 
-app.use('/users', userController)
-
+app.use('/pets', petController);
 
 app.listen(3000, () => {
   console.log('listening... on port: ', 3000);
