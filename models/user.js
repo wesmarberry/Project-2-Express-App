@@ -8,11 +8,7 @@ const userSchema = new mongoose.Schema({
   email: String,
   phone: String,
   zipcode: Number,
-<<<<<<< HEAD
   photo: {type: String, required: true},
-=======
-  photo: {type: String},
->>>>>>> user-routes
   pets: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Pet'

@@ -25,6 +25,11 @@ router.post('/register', async (req, res, next) => {
   const userDbEntry = {};
   userDbEntry.username = req.body.username;
   userDbEntry.password = passwordHash;
+  userDbEntry.name = req.body.name;
+  userDbEntry.email = req.body.email;
+  userDbEntry.phone = req.body.phone;
+  userDbEntry.zipcode = req.body.zipcode;
+  userDbEntry.photo = req.body.photo;
 
   try {
 
@@ -83,6 +88,19 @@ router.post('/new', async (req, res, next) => {
 
 })  
 
+// log out 
+
+router.get('/logout', (req, res) => {
+	req.session.destroy((err) => {
+		if (err) {
+			res.send(err)
+		} else {
+			res.redirect('/users')
+		}
+	})		
+})
+
+
 //index route
 
 router.get('/', async (req, res, next) => {
@@ -98,6 +116,8 @@ router.get('/', async (req, res, next) => {
 		next(err)
 	}				
 })
+
+
 
 
 

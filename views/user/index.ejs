@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>User Index Page</title>
-        <link rel="stylesheet" type="text/css" href="http://localhost:3000/static/style.css">
-        <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
-    </head>
-    <body>
+<%- include ../partials/header.ejs %>
 
         <% if (logged === undefined) {%>
             <a href="/users/new">Login/Register</a>
@@ -32,5 +25,4 @@
                 <% } %>
             </ul>
         </div>
-    </body>
-</html>
+<%- include ../partials/footer.ejs %>
