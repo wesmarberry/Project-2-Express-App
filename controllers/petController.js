@@ -7,4 +7,10 @@ router.get('/',(req,res)=>{
 	res.send('Pet')
 })
 
+router.get('/new', (req,res)=>{
+	res.render('pet/new.ejs',{
+		msg: "rendering new page"
+	})
+})
+
 module.exports = router;

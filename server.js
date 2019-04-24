@@ -11,6 +11,7 @@ const userController = require('./controllers/userController')
 // middleware
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(methodOverride('_method'));
+app.use(express.static('public'));
 
 // before our controllers
 app.use(session({
