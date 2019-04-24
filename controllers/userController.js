@@ -13,7 +13,7 @@ router.get('/new', (req, res) => {
 
 
 // route to register a new user
-router.post('/register', async (req, res) => {
+router.post('/register', async (req, res, next) => {
   
   // first we must hash the password
   const password = req.body.password;
@@ -38,13 +38,49 @@ router.post('/register', async (req, res) => {
 
     res.redirect('/users')
   } catch (err) {
-    res.send(err)
+    next(err)
   }
 
 
 })
 
 
+// logs in existing users
+router.post('/new', async (req, res, next) => {
+
+  try {
+    const userExists = await User.findOne({'username': req.body.username})
+    console.log(userExists);
+    if (userExists) {
+      if (bcrypt.compareSync(req.body.password, userExists.password)) {
+
+        req.session.userDbId = userExists._id
+        req.session.logged = true
+        req.session.username = req.body.username
+        req.session.message = ''
+        req.session.special = ''
+        res.redirect('/users')
+        
+      } else {
+        req.session.message = 'username or password is incorrect'
+        res.redirect('/users/new')
+
+      }
+    } else {
+      console.log("here");
+      req.session.message = "username or password does not exist"
+      res.redirect('/users/new')
+    }
+    
+
+
+  } catch (err) {
+
+    console.log("catch");
+    next(err)
+  }
+
+})  
 
 
 
