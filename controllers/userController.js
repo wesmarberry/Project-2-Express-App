@@ -109,8 +109,8 @@ router.get('/', async (req, res, next) => {
 		res.render('user/index.ejs', {
 			pets: foundPets,
 			logged: req.session.logged,
-			username: req.session.username
-
+			username: req.session.username,
+			id: req.session.userDbId
 		})
 	} catch (err) {
 		next(err)
@@ -120,8 +120,11 @@ router.get('/', async (req, res, next) => {
 // show route
 
 router.get('/:id', async (req, res, next) => {
+	if (req.session.logged === false || req.session.logged === undefined) {
+		res.redirect('/user/new.ejs')
+	}
 	if (req.session.userDbId === req.params.id) {
-		res.redirect('user/' + req.params.id + '/edit')
+		res.redirect('/' + req.params.id + '/edit')
 	} else {
 		try {
 			const foundUser = await User.findById(req.params.id)
@@ -137,7 +140,19 @@ router.get('/:id', async (req, res, next) => {
 
 // edit route
 
-router.get('/:id')
+router.get('/:id/edit', async (req, res, next) => {
+	try {
+		const foundUser = await User.findById(req.params.id)
+		res.render('user/edit.ejs', {
+			user: foundUser,
+			logged: req.session.logged,
+			id: req.session.userDbId,
+			username: req.session.username
+		})
+	} catch (err) {
+		next(err)
+	}
+})
 
 
 

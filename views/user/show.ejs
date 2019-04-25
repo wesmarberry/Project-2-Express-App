@@ -1,0 +1,44 @@
+<%- include ../partials/header.ejs %>
+
+        <% if (logged === undefined) {%>
+            <a href="/users/new">Login/Register</a>
+
+        <% } else {%>
+            <a href="/users/<%=id%>/edit"><%=username%></a>
+            <a href="/users/logout">Log Out</a>
+        <%}%>
+        <div class="container">
+            <div class="header-container">
+                <h1><%=user.username%></h1>    
+
+            </div>
+            <section>
+                <a href="/users">Home</a>
+
+            </section>
+            <h1><%=user.username%>'s Pets</h1>
+            <ul>
+                <% for(let i = 0; i < user.pets.length; i++){ %>
+                    <li>
+                        <a href="/users/<%=user.pets[i]._id%>"><img src="<%=user.pets[i].photo%>"></a></br>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+
+        <div class="user-info">
+            <img src="<%=user.photo%>">
+            <ul>
+                <li>Name: <%=user.name%></li>
+                <li>Phone Number: <%=user.phone%></li>
+                <li>Email: <%=user.email%></li>
+                <li>Zipcode: <%=user.zipcode%></li>
+            </ul>
+
+        </div>
+
+        <div class="schedule">
+            
+
+        </div>
+<%- include ../partials/footer.ejs %>

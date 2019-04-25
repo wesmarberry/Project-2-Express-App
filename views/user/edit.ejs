@@ -1,0 +1,46 @@
+<%- include ../partials/header.ejs %>
+
+        <% if (logged === undefined) {%>
+            <a href="/users/new">Login/Register</a>
+
+        <% } else {%>
+            <a href="/users/<%=id%>/edit"><%=username%></a>
+            <a href="/users/logout">Log Out</a>
+        <%}%>
+        <div class="container">
+            <div class="header-container">
+                <h1><%=user.username%></h1>    
+
+            </div>
+            <section>
+                <a href="/users">Home</a>
+
+            </section>
+            <h1><%=user.username%>'s Pets</h1>
+            <ul>
+                <% for(let i = 0; i < user.pets.length; i++){ %>
+                    <li>
+                        <a href="/users/<%=user.pets[i]._id%>"><img src="<%=user.pets[i].photo%>"></a></br>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+
+        <div class="user-info">
+            <img src="<%=user.photo%>">
+              <form action="/users/<%=user._id%>_method=PUT" method="POST">
+                <input type="text" name="username" value="<%=user.username%>">
+                <input type="text" name="name" value="<%=user.name%>">
+                <input type="email" name="email" value="<%=user.email%>">
+                <input type="text" name="phone" value="<%=user.phone%>">
+                <input type="text" name="zipcode" value="<%=user.zipcode%>">
+                <input type="text" name="photo" value="<%=user.photo%>">
+                <button type="submit">Update</button>
+              </form>
+        </div>
+
+        <div class="schedule">
+            
+
+        </div>
+<%- include ../partials/footer.ejs %>
