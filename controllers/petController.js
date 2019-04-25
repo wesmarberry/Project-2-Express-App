@@ -44,7 +44,7 @@ router.delete('/:id', async(req,res)=>{
 
 router.get('/:id', async(req,res)=>{
 	  try{
-			const petFound = await Pet.findOne({_id:req.params.id});
+			const petFound = await Pet.findOne({_id:req.params.id}).populate('schedule')
 			res.render('pet/show.ejs',{
 				pet: petFound,
 				loggedInUser: req.session.userDbId,
@@ -104,13 +104,13 @@ router.post('/', async(req,res)=>{
 
 router.post('/schedule', async (req, res, next) => {
 	try {
-		console.log('schedule route hit');
+		
 		const createdSchedule = await Schedule.create(req.body)
-		console.log(createdSchedule + ' is the created schedule');
+		
 		const foundPet = await Pet.findById(req.body.pet)
-		console.log(foundPet + ' is the found pet');
+		
 		foundPet.schedule.push(createdSchedule)
-		console.log(foundPet + ' is the pet after pushing the scheudle in');
+		
 		foundPet.save()
 		res.redirect('/pets/' + req.body.pet)
 
@@ -120,12 +120,32 @@ router.post('/schedule', async (req, res, next) => {
 })
 
 
+router.put('/schedule/:id',async(req,res,next)=>{
+	  try{
+		if (req.params.id === "a"){
+			const updatedSchedule = await Schedule.findByIdAndUpdate(req.body.scheduleId, {booked:true})
+			console.log(updatedSchedule, "<<< ===== schedule updated");
+			res.redirect('/pets/' + updatedSchedule.pet)
+		}
+		else if (req.params.id === "b"){
+			const deletedSchedule = await Schedule.findByIdAndDelete(req.body.scheduleId);
+			console.log(deletedSchedule, "<<< ===== schedule deleted");
 
+			const foundPet = await Pet.findOne({schedule:req.body.scheduleId});
+			console.log(foundPet, "<<< ===== pet before splice");
+			const index = foundPet.schedule.indexOf(req.body.scheduleId)
+			foundPet.splice(index,1);
+			foundPet.save()
+			console.log(foundPet, "<<< ===== pet after splice");
+		}
 
+		res.redirect('/pets/' + foundPet._id)
+	  		
+	  }
+	  catch(err){
+	  		next(err)
+	  }
 
-
-
-
-
+})
 
 module.exports = router;

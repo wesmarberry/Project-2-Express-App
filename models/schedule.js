@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const scheduleSchema = new mongoose.Schema({
 	date: String,
 	time: String,
-	proposer: String,
-	petOwner: String,
+	proposerId: String,
+	petOwnerId: String,
+	proposerUsername: String,
 	pet: String,
 	booked: {type: Boolean, default: false}
 
