@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Pet = require('../models/pet')
+const User = require('../models/user')
 
 router.get('/', async(req,res)=>{
 	  try{
@@ -15,7 +16,10 @@ router.get('/', async(req,res)=>{
 });
 
 router.get('/new', (req,res)=>{
+	console.log(req.session + ' this is req. session');
+	console.log(req.session.userDbId + " this is user db id");
 	res.render('pet/new.ejs',{
+		user: req.session.userDbId
 	})
 })
 
@@ -73,8 +77,13 @@ router.put('/:id', async(req,res)=>{
 
 router.post('/', async(req,res)=>{
 	  try{
-
+	  		console.log(req.body);
 			const petCreated = await Pet.create(req.body)
+			const foundUser = await User.findById(req.body.owner)
+			console.log(foundUser);
+			foundUser.pets.push(petCreated._id)
+			foundUser.save()
+			console.log(foundUser);
 			res.redirect(`pets/${petCreated._id}`)
 	  }
 	  catch(err){

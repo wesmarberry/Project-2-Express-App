@@ -37,7 +37,7 @@ router.post('/register', async (req, res, next) => {
     console.log(createdUser);
 
     req.session.logged = true;
-    req.session.usersDbId = createdUser._id
+    req.session.userDbId = createdUser._id
     req.session.username = createdUser.username
     req.session.message = ''
     req.session.updated = ''
@@ -143,7 +143,8 @@ router.get('/:id', async (req, res, next) => {
 
 router.get('/:id/edit', async (req, res, next) => {
 	try {
-		const foundUser = await User.findById(req.params.id)
+		const foundUser = await User.findById(req.params.id).populate('pets')
+		console.log(foundUser);
 		res.render('user/edit.ejs', {
 			user: foundUser,
 			logged: req.session.logged,
@@ -183,7 +184,7 @@ router.delete('/:id', async (req, res, next) => {
 	} catch (err) {
 		next(err)
 	}		
-
+})
 
 
 

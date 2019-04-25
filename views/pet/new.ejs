@@ -4,6 +4,7 @@
 
 <form action="/pets" method="POST">
 	<ul class="creatPetForm">
+		<input type="hidden" name="owner"    value="<%=user%>"></input>
 		<li>name:  	 <input type="text" name="name"    placeholder="e.g. Jax"></input></li>
 		<li>petKind: <input type="text" name="petKind" placeholder="e.g. Dog"></input></li>
 		<li>breed: 	 <input type="text" name="breed" placeholder="e.g. Border Collie"></input></li>

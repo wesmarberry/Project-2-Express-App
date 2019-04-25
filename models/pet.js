@@ -9,7 +9,8 @@ const petSchema = new mongoose.Schema({
 		ref: 'Schedule'
 	},
 	photo:{type:String, required:true},
-	petKind: {type: String, required:true}
+	petKind: {type: String, required:true},
+	owner: String
 });
 
 const Pet = mongoose.model('Pet', petSchema)
