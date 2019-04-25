@@ -25,10 +25,15 @@ router.get('/new', (req,res)=>{
 
 router.delete('/:id', async(req,res)=>{
 	  try{
+	  		const foundPet = await Pet.findById(req.params.id)
 			const petRemoved = await Pet.deleteOne({_id:req.params.id});
-			console.log(`Dog petRemoved ${petRemoved}`);
+			const foundUser = await User.findById(foundPet.owner)
+			const index = foundUser.pets.indexOf(req.params.id)
+			foundUser.pets.splice(index, 1)
+			foundUser.save()
+			// console.log(`Dog petRemoved ${petRemoved}`);
 			//also we need to upate the user array
-			res.redirect('/pets')			
+			res.redirect('/users')			
 	  }
 	  catch(err){
 	  		res.send(err)
@@ -40,7 +45,8 @@ router.get('/:id', async(req,res)=>{
 	  try{
 			const petFound = await Pet.findOne({_id:req.params.id});
 			res.render('pet/show.ejs',{
-				pet: petFound
+				pet: petFound,
+				user: req.session.userDbId
 			})  				
 	  }
 	  catch(err){
