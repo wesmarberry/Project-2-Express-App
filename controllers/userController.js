@@ -169,6 +169,22 @@ router.put('/:id', async (req, res, next) => {
 	}	
 })
 
+// delete route
+
+router.delete('/:id', async (req, res, next) => {
+	try {
+		const foundUser = await User.findByIdAndRemove(req.params.id)
+		const foundPets = await Pet.deleteMany({
+	        _id: {
+	          $in: foundUser.pets 
+	        }
+		})
+		res.redirect('/users')
+	} catch (err) {
+		next(err)
+	}		
+
+
 
 
 module.exports = router

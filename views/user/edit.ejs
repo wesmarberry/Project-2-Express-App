@@ -38,7 +38,11 @@
                 <button type="submit">Update</button>
               </form>
         </div>
-
+        <section>
+            <form action="/users/<%=user._id%>?_method=DELETE" method="POST">
+              <button type="submit">Delete Account</button>
+            </form>
+        </section>
         <div class="schedule">
             
 
