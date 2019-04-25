@@ -2,27 +2,44 @@
 
 <h2>show page</h2>
 
-<div class="dogPanel">
-	<div><%= pet.name%></div>
-	<div><img src="<%=pet.photo%>"></div>
-	<div><%= pet.petKind%></div>
-	<div><%= pet.age%></div>
-	<div><%= pet.breed%></div>
-	<div><a href="/users/<%=pet.owner%>">Contact Owner</a></div>
-	
+<div class="container">
+	<div class="dogPanel">
+		<div><%= pet.name%></div>
+		<div><img src="<%=pet.photo%>"></div>
+		<div><%= pet.petKind%></div>
+		<div><%= pet.age%></div>
+		<div><%= pet.breed%></div>
 
-	<%if (pet.owner === user) {%>
+		
 
-		<form action="/pets/<%=pet._id%>?_method=DELETE" method="POST">
-			<button>Remove Pet</button>
+		<%if (pet.owner === loggedInUser) {%>
+			<div><a href="/users/<%=pet.owner%>">User Home Page</a></div>
+			<form action="/pets/<%=pet._id%>?_method=DELETE" method="POST">
+				<button>Remove Pet</button>
+			</form>
+			<form action="/pets/<%=pet._id%>/edit" method="POST">
+				<button>Edit Pet Info</button>
+			</form>
+			<hr>
+		<%} else {%>
+			<div><a href="/users/<%=pet.owner%>">Contact Owner</a></div>
+		<%}%>
+	</div>
+
+	<div class="schedule">
+		<div class="schedule-panel">
+			
+		</div>
+		<form action='/pets/schedule' method='POST'>
+			<input type="text" name="date" placeholder='date i.e. 4/25'>
+			<input type="text" name="time" placeholder="time i.e. 4PM-5PM">
+			<input type='hidden' name='proposer' value='<%=loggedInUser%>'>
+			<input type='hidden' name='petOwner' value='<%=pet.owner%>'>
+			<input type='hidden' name='pet' value='<%=pet._id%>'>
+			<button type="submit">Propose Time</button>
 		</form>
-		<form action="/pets/<%=pet._id%>/edit" method="POST">
-			<button>Edit Pet Info</button>
-		</form>
-		<hr>
-	<%}%>
+	</div>
 </div>
-
 	
 
 

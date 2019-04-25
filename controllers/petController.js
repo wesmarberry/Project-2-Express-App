@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Pet = require('../models/pet')
 const User = require('../models/user')
+const Schedule = require('../models/schedule')
 
 router.get('/', async(req,res)=>{
 	  try{
@@ -44,10 +45,10 @@ router.delete('/:id', async(req,res)=>{
 router.get('/:id', async(req,res)=>{
 	  try{
 			const petFound = await Pet.findOne({_id:req.params.id});
-			const foundUser = await User.findById(petFound.owner)
 			res.render('pet/show.ejs',{
 				pet: petFound,
-				user: foundUser
+				loggedInUser: req.session.userDbId,
+				loggedInUsername: req.session.username
 			})  				
 	  }
 	  catch(err){
@@ -97,4 +98,34 @@ router.post('/', async(req,res)=>{
 	  		res.send(err)
 	  }
 })
+
+
+// create route for schedule 
+
+router.post('/schedule', async (req, res, next) => {
+	try {
+		console.log('schedule route hit');
+		const createdSchedule = await Schedule.create(req.body)
+		console.log(createdSchedule + ' is the created schedule');
+		const foundPet = await Pet.findById(req.body.pet)
+		console.log(foundPet + ' is the found pet');
+		foundPet.schedule.push(createdSchedule)
+		console.log(foundPet + ' is the pet after pushing the scheudle in');
+		foundPet.save()
+		res.redirect('/pets/' + req.body.pet)
+
+	} catch (err) {
+		next(err)
+	}
+})
+
+
+
+
+
+
+
+
+
+
 module.exports = router;

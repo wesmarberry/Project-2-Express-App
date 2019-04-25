@@ -17,6 +17,12 @@
 
             </section>
             <h1><%=user.username%>'s Pets</h1>
+            <%let sum = 0%>    
+                <%for (let i = 0; i < user.reviews.length; i++) {%>
+                    <%sum += Number(user.reviews[i].rating) %>
+                <%}%>
+                <%const overallRating = (sum/user.reviews.length).toFixed(1)%>
+                <h2>Overall Rating: <%=overallRating%></h2>
             <ul>
                 <% for(let i = 0; i < user.pets.length; i++){ %>
                     <li>
@@ -46,8 +52,12 @@
               <button type="submit">Delete Account</button>
             </form>
         </section>
-        <div class="schedule">
-            
-
-        </div>
+        <div>
+                <% for(let i = 0; i < user.reviews.length; i++){ %>
+                    <li>
+                        "<%=user.reviews[i].text%>" - <%=user.reviews[i].userReviewing%></br>
+                        Rating: <%=user.reviews[i].rating%>
+                    </li>
+                <% } %>
+            </div>
 <%- include ../partials/footer.ejs %>

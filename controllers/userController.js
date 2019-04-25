@@ -148,7 +148,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.get('/:id/edit', async (req, res, next) => {
 	try {
-		const foundUser = await User.findById(req.params.id).populate('pets')
+		const foundUser = await User.findById(req.params.id).populate('pets').populate('reviews')
 		console.log(foundUser);
 		res.render('user/edit.ejs', {
 			user: foundUser,
