@@ -19,3 +19,6 @@ module.exports = Pet;
 
 //changing the age type to string until we figure out how we will store the information about 
 //years or months the pet has.
+
+// How I'm gonna link the pet with his owner when someone wants to make a proposal?
+// maybe seting up a propertie ownerId when creating a new dog?

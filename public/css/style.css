@@ -5,3 +5,19 @@ body{
 	display: flex;
 	flex-direction: column;
 }
+.indexDogPanel{
+	display: flex;
+	flex-flow: row wrap;	
+}
+img {
+  display: block;
+  max-width: 100px;
+  height: 100px;
+}
+.dogInfo{
+	display: flex;
+	flex-direction: column;
+	border: 5px solid black;
+	padding: 5px;
+	margin: 5px;
+}
