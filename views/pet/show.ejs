@@ -8,7 +8,7 @@
 	<div><%= pet.petKind%></div>
 	<div><%= pet.age%></div>
 	<div><%= pet.breed%></div>
-	<div><%= pet.owner%></div>
+	<div><a href="/users/<%=pet.owner%>">Contact Owner</a></div>
 	
 
 	<%if (pet.owner === user) {%>

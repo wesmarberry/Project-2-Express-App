@@ -122,15 +122,19 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
 	if (req.session.logged === false || req.session.logged === undefined) {
-		res.redirect('/user/new.ejs')
+		res.redirect('/users/new')
 	}
 	if (req.session.userDbId === req.params.id) {
-		res.redirect('/' + req.params.id + '/edit')
+		res.redirect('/users/' + req.params.id + '/edit')
 	} else {
 		try {
-			const foundUser = await User.findById(req.params.id)
+			const foundUser = await User.findById(req.params.id).populate('pets')
 			res.render('user/show.ejs', {
-				user: foundUser
+				user: foundUser,
+				logged: req.session.logged,
+				id: req.session.userDbId,
+				username: req.session.username,
+				updated: req.session.updated
 			})
 		} catch (err) {
 			next(err)
