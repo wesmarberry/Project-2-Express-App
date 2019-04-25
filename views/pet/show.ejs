@@ -1,0 +1,27 @@
+<%- include ../partials/header.ejs %>
+
+<h2>show page</h2>
+
+<div class="dogPanel">
+	<div><%= pet.name%></div>
+	<div><img src="<%=pet.photo%>"></div>
+	<div><%= pet.petKind%></div>
+	<div><%= pet.age%></div>
+	<div><%= pet.breed%></div>
+	
+	<form action="/pets/<%=pet._id%>?_method=DELETE" method="POST">
+		<button>Remove Pet</button>
+	</form>
+	<form action="/pets/<%=pet._id%>/edit" method="POST">
+		<button>Edit Pet Info</button>
+	</form>
+	<hr>
+</div>
+
+	
+
+
+<%- include ../partials/footer.ejs %>
+
+
+

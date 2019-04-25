@@ -2,15 +2,83 @@ const express = require('express');
 const router = express.Router();
 const Pet = require('../models/pet')
 
-
-router.get('/',(req,res)=>{
-	res.send('Pet')
-})
+router.get('/', async(req,res)=>{
+	  try{
+	  		const allPets = await Pet.find({});
+	  		res.render('pet/index.ejs',{
+	  			pets: allPets
+	  		});
+	  }
+	  catch(err){
+	  		res.send(err);
+	  }
+});
 
 router.get('/new', (req,res)=>{
 	res.render('pet/new.ejs',{
-		msg: "rendering new page"
 	})
 })
 
+router.delete('/:id', async(req,res)=>{
+	  try{
+			const petRemoved = await Pet.deleteOne({_id:req.params.id});
+			console.log(`Dog petRemoved ${petRemoved}`);
+			//also we need to upate the user array
+			res.redirect('/pets')			
+	  }
+	  catch(err){
+	  		res.send(err)
+	  }
+})
+
+
+router.get('/:id', async(req,res)=>{
+	  try{
+			const petFound = await Pet.findOne({_id:req.params.id});
+			res.render('pet/show.ejs',{
+				pet: petFound
+			})  				
+	  }
+	  catch(err){
+	  		res.send(err)
+	  }
+})
+
+router.post('/:id/edit', async(req,res)=>{
+	  try{
+			const petToUpdate = await Pet.findOne({_id:req.params.id});
+			res.render('pet/edit.ejs',{
+				pet: petToUpdate
+			})  				
+	  }
+	  catch(err){
+	  		res.send(err)
+	  }
+})
+
+
+router.put('/:id', async(req,res)=>{
+	  try{
+			const petToUpdated = await Pet.findByIdAndUpdate(req.params.id, req.body);
+
+			console.log("=====pet was updated========");
+			console.log(petToUpdated);
+			res.redirect('/pets'); 				
+	  }
+	  catch(err){
+	  		res.send(err)
+	  }
+})
+
+
+router.post('/', async(req,res)=>{
+	  try{
+
+			const petCreated = await Pet.create(req.body)
+			res.redirect(`pets/${petCreated._id}`)
+	  }
+	  catch(err){
+	  		res.send(err)
+	  }
+})
 module.exports = router;
