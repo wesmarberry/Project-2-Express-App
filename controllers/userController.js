@@ -117,7 +117,27 @@ router.get('/', async (req, res, next) => {
 	}				
 })
 
+// show route
 
+router.get('/:id', async (req, res, next) => {
+	if (req.session.userDbId === req.params.id) {
+		res.redirect('user/' + req.params.id + '/edit')
+	} else {
+		try {
+			const foundUser = await User.findById(req.params.id)
+			res.render('user/show.ejs', {
+				user: foundUser
+			})
+		} catch (err) {
+			next(err)
+		}
+	}
+})
+
+
+// edit route
+
+router.get('/:id')
 
 
 

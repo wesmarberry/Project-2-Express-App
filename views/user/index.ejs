@@ -4,7 +4,7 @@
             <a href="/users/new">Login/Register</a>
 
         <% } else {%>
-            <p><%=username%> Is Logged In</p>
+            <a href="/users/<%=id%>/edit"><%=username%></a>
             <a href="/users/logout">Log Out</a>
         <%}%>
         <div class="container">
