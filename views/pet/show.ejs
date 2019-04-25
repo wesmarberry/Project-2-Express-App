@@ -55,15 +55,17 @@
 			<%}%>
 			
 		</div>
-		<form action='/pets/schedule' method='POST'>
-			<input type="text" name="date" placeholder='date i.e. 4/25'>
-			<input type="text" name="time" placeholder="time i.e. 4PM-5PM">
-			<input type='hidden' name='proposerId' value='<%=loggedInUser%>'>
-			<input type='hidden' name='petOwnerId' value='<%=pet.owner%>'>
-			<input type='hidden' name='proposerUsername' value='<%=loggedInUsername%>'>
-			<input type='hidden' name='pet' value='<%=pet._id%>'>
-			<button type="submit">Propose Time</button>
-		</form>
+		<% if (pet.owner !== loggedInUser){%>
+			<form action='/pets/schedule' method='POST'>
+				<input type="text" name="date" placeholder='date i.e. 4/25'>
+				<input type="text" name="time" placeholder="time i.e. 4PM-5PM">
+				<input type='hidden' name='proposerId' value='<%=loggedInUser%>'>
+				<input type='hidden' name='petOwnerId' value='<%=pet.owner%>'>
+				<input type='hidden' name='proposerUsername' value='<%=loggedInUsername%>'>
+				<input type='hidden' name='pet' value='<%=pet._id%>'>
+				<button type="submit">Propose Time</button>
+			</form>
+		<%}%>
 	</div>
 </div>
 	

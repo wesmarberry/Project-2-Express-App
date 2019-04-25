@@ -17,8 +17,7 @@ router.get('/', async(req,res)=>{
 });
 
 router.get('/new', (req,res)=>{
-	console.log(req.session + ' this is req. session');
-	console.log(req.session.userDbId + " this is user db id");
+
 	res.render('pet/new.ejs',{
 		user: req.session.userDbId
 	})
@@ -73,8 +72,6 @@ router.put('/:id', async(req,res)=>{
 	  try{
 			const petToUpdated = await Pet.findByIdAndUpdate(req.params.id, req.body);
 
-			console.log("=====pet was updated========");
-			console.log(petToUpdated);
 			res.redirect('/pets'); 				
 	  }
 	  catch(err){
@@ -88,10 +85,10 @@ router.post('/', async(req,res)=>{
 	  		console.log(req.body);
 			const petCreated = await Pet.create(req.body)
 			const foundUser = await User.findById(req.body.owner)
-			console.log(foundUser);
+			
 			foundUser.pets.push(petCreated._id)
 			foundUser.save()
-			console.log(foundUser);
+			
 			res.redirect(`pets/${petCreated._id}`)
 	  }
 	  catch(err){
@@ -127,20 +124,19 @@ router.put('/schedule/:id',async(req,res,next)=>{
 			console.log(updatedSchedule, "<<< ===== schedule updated");
 			res.redirect('/pets/' + updatedSchedule.pet)
 		}
-		else if (req.params.id === "b"){
+		else if (req.params.id === "d"){
+			console.log();
 			const deletedSchedule = await Schedule.findByIdAndDelete(req.body.scheduleId);
 			console.log(deletedSchedule, "<<< ===== schedule deleted");
 
 			const foundPet = await Pet.findOne({schedule:req.body.scheduleId});
 			console.log(foundPet, "<<< ===== pet before splice");
 			const index = foundPet.schedule.indexOf(req.body.scheduleId)
-			foundPet.splice(index,1);
+			foundPet.schedule.splice(index,1);
 			foundPet.save()
 			console.log(foundPet, "<<< ===== pet after splice");
+			res.redirect('/pets/' + foundPet._id)
 		}
-
-		res.redirect('/pets/' + foundPet._id)
-	  		
 	  }
 	  catch(err){
 	  		next(err)
