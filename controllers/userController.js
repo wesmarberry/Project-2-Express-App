@@ -40,6 +40,7 @@ router.post('/register', async (req, res, next) => {
     req.session.usersDbId = createdUser._id
     req.session.username = createdUser.username
     req.session.message = ''
+    req.session.updated = ''
 
 
     res.redirect('/users')
@@ -64,7 +65,7 @@ router.post('/new', async (req, res, next) => {
         req.session.logged = true
         req.session.username = req.body.username
         req.session.message = ''
-        req.session.special = ''
+        req.session.updated = ''
         res.redirect('/users')
         
       } else {
@@ -147,13 +148,26 @@ router.get('/:id/edit', async (req, res, next) => {
 			user: foundUser,
 			logged: req.session.logged,
 			id: req.session.userDbId,
-			username: req.session.username
+			username: req.session.username,
+			updated: req.session.updated
 		})
 	} catch (err) {
 		next(err)
 	}
 })
 
+// update route
+
+router.put('/:id', async (req, res, next) => {
+	try {
+		const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})
+		req.session.updated = req.session.username + ' was updated!'
+		res.redirect('/users/' + req.params.id + '/edit')
+		req.session.updated = ''
+	} catch (err) {
+		next(err)
+	}	
+})
 
 
 

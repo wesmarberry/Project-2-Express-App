@@ -25,10 +25,10 @@
                 <% } %>
             </ul>
         </div>
-
+        <small><%=updated%></small>
         <div class="user-info">
             <img src="<%=user.photo%>">
-              <form action="/users/<%=user._id%>_method=PUT" method="POST">
+              <form action="/users/<%=user._id%>?_method=PUT" method="POST">
                 <input type="text" name="username" value="<%=user.username%>">
                 <input type="text" name="name" value="<%=user.name%>">
                 <input type="email" name="email" value="<%=user.email%>">
