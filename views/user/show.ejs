@@ -9,8 +9,13 @@
         <%}%>
         <div class="container">
             <div class="header-container">
-                <h1><%=user.username%></h1>    
-
+                <h1><%=user.username%></h1>
+                <%let sum = 0%>    
+                <%for (let i = 0; i < user.reviews.length; i++) {%>
+                    <%sum += Number(user.reviews[i].rating) %>
+                <%}%>
+                <%const overallRating = (sum/user.reviews.length).toFixed(1)%>
+                <h2>Overall Rating: <%=overallRating%></h2>
             </div>
             <section>
                 <a href="/users">Home</a>
