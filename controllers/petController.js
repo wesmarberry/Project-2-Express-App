@@ -9,8 +9,27 @@ router.get('/',(req,res)=>{
 
 router.get('/new', (req,res)=>{
 	res.render('pet/new.ejs',{
-		msg: "rendering new page"
 	})
 })
 
+router.get('/:id', (req,res)=>{
+	res.render('pet/show.ejs',{
+	})
+})
+
+
+
+router.post('/', async(req,res)=>{
+	  try{
+
+		const petCreated = await Pet.create(req.body)
+		res.render('pet/show.ejs',{
+			pet: petCreated
+		})
+	  		
+	  }
+	  catch(err){
+	  		res.send(err)
+	  }
+})
 module.exports = router;

@@ -1,5 +1,20 @@
 <%- include ../partials/header.ejs %>
 
-  <p><%= msg%></p>
+<h2>Add your Pet</h2>
+
+<form action="/pets/<%=pet._id%>" method="POST">
+	<ul class="creatPetForm">
+		<li>petKind: <input type="text" name="petKind" placeholder="e.g. Dog"></input></li>
+		<li>name:  	 <input type="text" name="name"    placeholder="e.g. Jax"></input></li>
+		<li>breed: 	 <input type="text" name="breed" placeholder="e.g. Border Collie"></input></li>
+		<li>age:	 <input type="text" name="age"   placeholder="e.g. 5 months"></input></li>
+		<li>photo:	 <input type="text" name="photo" placeholder="File to Upload"></input></li>
+	</ul>
+	<button>Create Puppy Dog</button>
+</form>
 
 <%- include ../partials/footer.ejs %>
+
+
+
+
