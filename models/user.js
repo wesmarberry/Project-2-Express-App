@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Pet = require('./pet')
+const Review = require('./review')
 
 const userSchema = new mongoose.Schema({
   username: {type: String, required: true, unique: true},

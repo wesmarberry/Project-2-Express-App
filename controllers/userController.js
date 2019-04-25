@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User   = require('../models/user');
 const Pet = require('../models/pet')
+const Review = require('../models/review')
 const bcrypt = require('bcryptjs')
 
 
@@ -128,7 +129,7 @@ router.get('/:id', async (req, res, next) => {
 		res.redirect('/users/' + req.params.id + '/edit')
 	} else {
 		try {
-			const foundUser = await User.findById(req.params.id).populate('pets')
+			const foundUser = await User.findById(req.params.id).populate('pets').populate('reviews')
 			res.render('user/show.ejs', {
 				user: foundUser,
 				logged: req.session.logged,
@@ -189,6 +190,25 @@ router.delete('/:id', async (req, res, next) => {
 		next(err)
 	}		
 })
+
+// review post route
+
+router.post('/review', async (req, res, next) => {
+	console.log('entering post route');
+	try	{
+		console.log(req.body);
+		const createdReview = await Review.create(req.body)
+		console.log(createdReview + ' is the created review');
+		const foundUser = await User.findById(req.body.userReviewed)
+		console.log(foundUser + ' is the found user');
+		foundUser.reviews.push(createdReview)
+		foundUser.save()
+		res.redirect('/users/' + foundUser._id)
+	} catch (err) {
+		next(err)
+	}
+})
+
 
 
 
