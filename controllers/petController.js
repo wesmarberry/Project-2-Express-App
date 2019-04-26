@@ -3,6 +3,43 @@ const router = express.Router();
 const Pet = require('../models/pet')
 const User = require('../models/user')
 const Schedule = require('../models/schedule')
+const nodemailer	 = require('nodemailer')
+
+
+// smtp setup
+
+const mailer = async (senderEmail, senderUsername, receiverEmail, subject, message) => {
+
+	// let testAccount = await nodemailer.createTestAccount()
+
+	let transporter = nodemailer.createTransport({
+	host: 'smtp.gmail.com',
+	auth: {
+		user: "pupfinder12345@gmail.com",
+		pass: "?pup12345"
+	},
+	})
+
+	let info = await transporter.sendMail({
+		from: senderEmail,
+		to: receiverEmail,
+		subject: subject,
+		text: senderUsername + message
+	})
+	console.log("Message sent: %s", info);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 router.get('/', async(req,res)=>{
 	  try{
@@ -106,10 +143,21 @@ router.post('/schedule', async (req, res, next) => {
 		
 		const foundPet = await Pet.findById(req.body.pet)
 		
+		const userSender = await User.findById(req.body.proposerId)
+		console.log(userSender + '========= sender');
+		const userReceiver = await User.findById(req.body.petOwnerId)
+		console.log(userReceiver + '========= receiver');
 		foundPet.schedule.push(createdSchedule)
 		
+		mailer(userSender.email, userSender.username, userReceiver.email, 'Pet Request',
+		 ' would like to play with your pet! Send and email back to ' + userSender.email + ' and respond on the site!  Link: ')
+
+
+
 		foundPet.save()
 		res.redirect('/pets/' + req.body.pet)
+
+
 
 	} catch (err) {
 		next(err)
@@ -121,6 +169,7 @@ router.put('/schedule/:id',async(req,res,next)=>{
 	  try{
 		if (req.params.id === "a"){
 			const updatedSchedule = await Schedule.findByIdAndUpdate(req.body.scheduleId, {booked:true})
+			const userSender = await User.findById(req.body.proposerId)
 			console.log(updatedSchedule, "<<< ===== schedule updated");
 			res.redirect('/pets/' + updatedSchedule.pet)
 		}
