@@ -4,6 +4,9 @@ const Pet = require('../models/pet')
 const User = require('../models/user')
 const Schedule = require('../models/schedule')
 const nodemailer	 = require('nodemailer')
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/'})
+const fs = require('fs');
 
 
 // mail notification set up
@@ -69,6 +72,27 @@ router.delete('/:id', async(req,res)=>{
 })
 
 
+router.get('/:id/photo', async(req,res, next) => {
+	
+	  try{
+
+	  	console.log('===== hit the photo route ========');
+
+	  	
+	  		const foundPet = await Pet.findById(req.params.id);
+			console.log('foundPet');
+			console.log(foundPet);
+			res.set('Content-Type', foundPet.photo.contentType)
+			
+			res.send(foundPet.photo.data)
+	  }
+	  catch(err){
+	  		next(err)
+	  }
+
+})
+
+
 router.get('/:id', async(req,res)=>{
 	  try{
 			const petFound = await Pet.findOne({_id:req.params.id}).populate('schedule')
@@ -116,19 +140,34 @@ router.put('/:id', async(req,res)=>{
 })
 
 
-router.post('/', async(req,res)=>{
+router.post('/', upload.single('photo'), async(req,res,next)=>{
 	  try{
-	  		console.log(req.body);
-			const petCreated = await Pet.create(req.body)
+
+		  	const filePath = './' + req.file.path
+			
+			const newPet = new Pet
+			newPet.name = req.body.name
+			newPet.breed = req.body.breed
+			newPet.age = req.body.age
+			newPet.petKind = req.body.petKind
+			newPet.owner = req.body.owner
+			newPet.photo.data = fs.readFileSync(filePath)
+
+			await newPet.save();
+
 			const foundUser = await User.findById(req.body.owner)
 			
-			foundUser.pets.push(petCreated._id)
+			foundUser.pets.push(newPet._id)
 			foundUser.save()
-			
-			res.redirect(`pets/${petCreated._id}`)
+
+			await fs.unlink(filePath, (err) => {
+				if(err) next(err);
+			})
+
+			res.redirect(`pets/${newPet._id}`)
 	  }
 	  catch(err){
-	  		res.send(err)
+	  		next(err)
 	  }
 })
 
