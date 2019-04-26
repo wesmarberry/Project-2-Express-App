@@ -3,6 +3,7 @@ const app            = express();
 const bodyParser     = require('body-parser');
 const methodOverride = require('method-override');
 const session        = require('express-session');
+const nodemailer	 = require('nodemailer')
 require('./db/db')
 
 const petController = require('./controllers/petController')

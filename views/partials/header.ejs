@@ -5,21 +5,28 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
+
 <body class="container-fluid">
+	<div class="background">
+		<nav class="container-fluid bg-primary nav">
+		  
+		  <div class="login-header">
+			  <a href="/users"><h1>Cuddle <br> Bugs Finder</h1></a>
+			  <img src="http://pngimg.com/uploads/dog/dog_PNG136.png">
+			  <img src="http://pngimg.com/uploads/dog/dog_png2399.png">
+			  <img src="http://pngimg.com/uploads/dog/dog_PNG182.png">
+			  <%if (logged === undefined) {%>	
+				  <form action="/users/new" method="POST">
+				    <input type="text" name="username" placeholder="username">
+				    <a href="/users/new">Register</a><br>
+				    <input type="password" name="password" placeholder="password">
+				    <button type="submit">Login</button>
+				  </form>
+			  <%} else {%>
+			  	  <a href="/users/<%=id%>/edit"><%=username%></a>
+		          <a href="/users/logout">Log Out</a>
+			  <%}%>	
+		  </div>
 
-<nav class="container-fluid bg-primary">
-  
-  <div class="login-header">
-	  <a href="/users"><h1>cuddle <br> bugs finder</h1></a>
-	  <img src="http://pngimg.com/uploads/dog/dog_PNG136.png">
-	  <img src="http://pngimg.com/uploads/dog/dog_png2399.png">
-	  <img src="http://pngimg.com/uploads/dog/dog_PNG182.png">
-	  <form action="/users/new" method="POST">
-	    <input type="text" name="username" placeholder="username">
-	    <a href="/users/new">Register</a><br>
-	    <input type="password" name="password" placeholder="password">
-	    <button type="submit">Login</button>
-	  </form>
-  </div>
 
-</nav>
+		</nav>

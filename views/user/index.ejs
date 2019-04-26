@@ -1,28 +1,15 @@
 <%- include ../partials/header.ejs %>
-
-        <% if (logged === undefined) {%>
-            <a href="/users/new">Login/Register</a>
-
-        <% } else {%>
-            <a href="/users/<%=id%>/edit"><%=username%></a>
-            <a href="/users/logout">Log Out</a>
-        <%}%>
+        
         <div class="container">
-            <div class="header-container">
-                <h1>Index Page</h1>    
-
-            </div>
-            <section>
-                <a href="/users">Home</a>
-
-            </section>
-            <h1>Pets</h1>
-            <ul>
+            
+            
+            <ul class='pets-ul'>
                 <% for(let i = 0; i < pets.length; i++){ %>
-                    <li>
-                        <a href="/pets/<%=pets[i]._id%>"><img src="<%=pets[i].photo%>"></a></br>
+                    <li class='pets-li'>
+                        <a href="/pets/<%=pets[i]._id%>"><img class='pet-img' src="<%=pets[i].photo%>"></a></br>
                     </li>
                 <% } %>
             </ul>
         </div>
+  
 <%- include ../partials/footer.ejs %>
