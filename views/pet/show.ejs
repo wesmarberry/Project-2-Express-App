@@ -1,17 +1,19 @@
 <%- include ../partials/header.ejs %>
 
-<h2>show page</h2>
 
-<div class="container">
-	<div class="dogPanel">
-		<div><%= pet.name%></div>
-		<div><img src="/pets/<%=pet._id%>/photo"></div>
-		<div><%= pet.petKind%></div>
-		<div><%= pet.age%></div>
-		<div><%= pet.breed%></div>
+
+
+<div class="show-container">
+	<div class="dog-panel">
+		<h5 class='show-label'><%= pet.name%></h5>
+		<div class='show-label'><img class='pet-img' src="/pets/<%=pet._id%>/photo"></div>
+<!-- 		<div><%= pet.petKind%></div> -->
+		<div class='show-label'>Age: <%= pet.age%></div>
+		<div class='show-label'>Breed: <%= pet.breed%></div>
+
 
 		<%if (pet.owner === loggedInUser) {%>
-			<div><a href="/users/<%=pet.owner%>">User Home Page</a></div>
+			<div><a class='owner-link' href="/users/<%=pet.owner%>">User Home Page</a></div>
 			<form action="/pets/<%=pet._id%>?_method=DELETE" method="POST">
 				<button>Remove Pet</button>
 			</form>
@@ -20,13 +22,14 @@
 			</form>
 			<hr>
 		<%} else {%>
-			<div><a href="/users/<%=pet.owner%>">Contact Owner</a></div>
+			<div><a class='owner-link' href="/users/<%=pet.owner%>">Contact Owner</a></div>
 		<%}%>
 	</div>
 
 	<div class="schedule">
 		<div class="schedule-panel">
-
+			<h3>Schedule</h3>
+			<ul>
 			<% for (let i = 0 ; i < pet.schedule.length; i++) {%>
 				 <%let status = ""%>
 				 <%if (pet.schedule[i].booked === false){%>
@@ -34,9 +37,9 @@
 					<% }else{ %>
 						<%status = "Confirmed"%>
 					<%}%>
-				<p>
+				<li>
 					<%=`${pet.schedule[i].date} - ${pet.schedule[i].time}: ${pet.schedule[i].proposerUsername} ${status}`%>
-				</p>
+				</li>
 
 
 				<%if (pet.owner === loggedInUser && pet.schedule[i].booked === false){%>
@@ -51,7 +54,7 @@
 						</form>
 					<%} %>
 			<%}%>
-			
+			</ul>
 		</div>
 		<% if (pet.owner !== loggedInUser && logged !== undefined){%>
 			<form action='/pets/schedule' method='POST'>

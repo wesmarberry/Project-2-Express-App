@@ -16,7 +16,11 @@
                     <%sum += Number(user.reviews[i].rating) %>
                 <%}%>
                 <%const overallRating = (sum/user.reviews.length).toFixed(1)%>
-                <h2>Overall Rating: <%=overallRating%></h2>
+                <%if (overallRating === 'NaN') {%>
+                    <h2>Overall Rating: No Reviews</h2>
+                <%} else {%> 
+                    <h2>Overall Rating: <%=overallRating%></h2>
+                <%}%>    
             <ul>
                 <% for(let i = 0; i < user.pets.length; i++){ %>
                     <li>
