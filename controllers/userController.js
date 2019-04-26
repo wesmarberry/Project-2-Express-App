@@ -9,7 +9,10 @@ const bcrypt = require('bcryptjs')
 // login and register route
 router.get('/new', (req, res) => {
 	res.render('user/new.ejs', {
-		message: req.session.message
+		message: req.session.message,
+		logged: req.session.logged,
+		username: req.session.username,
+		id: req.session.userDbId
 	})		
 })
 

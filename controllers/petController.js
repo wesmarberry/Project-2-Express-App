@@ -84,6 +84,8 @@ router.delete('/:id', async(req,res)=>{
 router.get('/:id', async(req,res)=>{
 	  try{
 			const petFound = await Pet.findOne({_id:req.params.id}).populate('schedule')
+			console.log(req.session);
+			console.log(req.session.logged);
 			res.render('pet/show.ejs',{
 				pet: petFound,
 				loggedInUser: req.session.userDbId,
