@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const User   = require('../models/user');
-const Pet = require('../models/pet')
-const Review = require('../models/review')
-const bcrypt = require('bcryptjs')
+const Pet = require('../models/pet');
+const Review = require('../models/review');
+const bcrypt = require('bcryptjs');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/'})
+const fs = require('fs');
 
 
 // login and register route
@@ -18,12 +21,20 @@ router.get('/new', (req, res) => {
 
 
 // route to register a new user
-router.post('/register', async (req, res, next) => {
-  
+router.post('/register', upload.single('photo'), async (req, res, next) => {
+  console.log(req.body);
+  console.log(req.file)
   // first we must hash the password
   const password = req.body.password;
   // the password has is what we want to put in the database
+  console.log('bcrypt=========before');
+  console.log(req.body);
+  
   const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+
+  console.log('bcrypt=========after');
+  // setting the filePath for the users photo
+  const filePath = './' + req.file.path
 
   // create and object for the db entry
   const userDbEntry = {};
@@ -33,11 +44,16 @@ router.post('/register', async (req, res, next) => {
   userDbEntry.email = req.body.email;
   userDbEntry.phone = req.body.phone;
   userDbEntry.zipcode = req.body.zipcode;
-  userDbEntry.photo = req.body.photo;
+  // userDbEntry.photo = req.body.photo;
+  
 
   try {
 
     const createdUser = await User.create(userDbEntry)
+     createdUser.photo.data = fs.readFileSync(filePath);
+     createdUser.save()
+
+    console.log('createdUser==================');
     console.log(createdUser);
 
     req.session.logged = true;
@@ -46,8 +62,12 @@ router.post('/register', async (req, res, next) => {
     req.session.message = ''
     req.session.updated = ''
 
+    fs.unlink(filePath, (err) => {
+    	if(err) next(err);
+	})
 
     res.redirect('/users')
+  
   } catch (err) {
     next(err)
   }
@@ -120,6 +140,26 @@ router.get('/', async (req, res, next) => {
 	} catch (err) {
 		next(err)
 	}				
+})
+
+//User serving photo
+
+router.get('/:id/photo', async(req,res, next) => {
+	
+	try{
+
+	  	console.log('===== hit the photo route ========');
+
+	  	
+	  		const foundUser = await User.findById(req.params.id);
+			console.log('foundUser');
+			console.log(foundUser);
+			res.set('Content-Type', foundUser.photo.contentType)		
+			res.send(foundUser.photo.data)
+	}
+	catch(err){
+	 	next(err)
+	}
 })
 
 // show route

@@ -19,14 +19,16 @@
             <ul>
                 <% for(let i = 0; i < user.pets.length; i++){ %>
                     <li>
-                        <a href="/pets/<%=user.pets[i]._id%>"><img src="<%=user.pets[i].photo%>"></a></br>
+                        <a href="/pets/<%=user.pets[i]._id%>">
+                            <img src="<%=user.pets[i].photo%>">
+                        </a></br>
                     </li>
                 <% } %>
             </ul>
         </div>
 
         <div class="user-info">
-            <img src="<%=user.photo%>">
+            <img src="/users/<%=user._id%>/photo">
             <ul>
                 <li>Name: <%=user.name%></li>
                 <li>Email: <%=user.email%></li>

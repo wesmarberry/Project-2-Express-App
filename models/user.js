@@ -9,7 +9,9 @@ const userSchema = new mongoose.Schema({
   email: String,
   phone: String,
   zipcode: Number,
-  photo: {type: String, required: true},
+  photo:{ 
+    data: Buffer,
+    contentType: String },
   pets: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Pet'

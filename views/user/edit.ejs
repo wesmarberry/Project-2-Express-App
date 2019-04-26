@@ -30,14 +30,14 @@
         </div>
         <small><%=updated%></small>
         <div class="user-info">
-            <img src="<%=user.photo%>">
+            <img src="/users/<%=user._id%>/photo">
               <form action="/users/<%=user._id%>?_method=PUT" method="POST">
                 <input type="text" name="username" value="<%=user.username%>">
                 <input type="text" name="name" value="<%=user.name%>">
                 <input type="email" name="email" value="<%=user.email%>">
                 <input type="text" name="phone" value="<%=user.phone%>">
                 <input type="text" name="zipcode" value="<%=user.zipcode%>">
-                <input type="text" name="photo" value="<%=user.photo%>">
+                <input type="text" name="photo">
                 <button type="submit">Update</button>
               </form>
         </div>
