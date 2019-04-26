@@ -118,7 +118,7 @@ router.put('/:id', async(req,res)=>{
 	  try{
 			const petToUpdated = await Pet.findByIdAndUpdate(req.params.id, req.body);
 
-			res.redirect('/pets'); 				
+			res.redirect('/users'); 				
 	  }
 	  catch(err){
 	  		res.send(err)
