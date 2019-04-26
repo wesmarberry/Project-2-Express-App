@@ -5,10 +5,21 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
-<body>
+<body class="container-fluid">
 
-<nav>
+<nav class="container-fluid bg-primary">
   
-  <h1>HEADER HERE!!!</h1>
+  <div class="login-header">
+	  <a href="/users"><h1>cuddle <br> bugs finder</h1></a>
+	  <img src="http://pngimg.com/uploads/dog/dog_PNG136.png">
+	  <img src="http://pngimg.com/uploads/dog/dog_png2399.png">
+	  <img src="http://pngimg.com/uploads/dog/dog_PNG182.png">
+	  <form action="/users/new" method="POST">
+	    <input type="text" name="username" placeholder="username">
+	    <a href="/users/new">Register</a><br>
+	    <input type="password" name="password" placeholder="password">
+	    <button type="submit">Login</button>
+	  </form>
+  </div>
 
 </nav>
