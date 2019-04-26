@@ -169,15 +169,22 @@ router.put('/schedule/:id',async(req,res,next)=>{
 	  try{
 		if (req.params.id === "a"){
 			const updatedSchedule = await Schedule.findByIdAndUpdate(req.body.scheduleId, {booked:true})
-			const userSender = await User.findById(req.body.proposerId)
+			const userSender = await User.findById(updatedSchedule.petOwnerId)
+			const userReceiver = await User.findById(updatedSchedule.proposerId)
 			console.log(updatedSchedule, "<<< ===== schedule updated");
+			mailer(userSender.email, userSender.username, userReceiver.email, 'Pet Request',
+		 ' ACCEPTED your request to play with their pet! Send and email back to ' + userSender.email + ' and get the details on where to meet!  Link: ')
+
 			res.redirect('/pets/' + updatedSchedule.pet)
 		}
 		else if (req.params.id === "d"){
 			console.log();
 			const deletedSchedule = await Schedule.findByIdAndDelete(req.body.scheduleId);
 			console.log(deletedSchedule, "<<< ===== schedule deleted");
-
+			const userSender = await User.findById(deletedSchedule.petOwnerId)
+			const userReceiver = await User.findById(deletedSchedule.proposerId)
+			mailer(userSender.email, userSender.username, userReceiver.email, 'Pet Request',
+		 ' DECLINED your request to play with their pet :( . Send and email back to ' + userSender.email + ' or return to the site to propose a new time!  Link: ')
 			const foundPet = await Pet.findOne({schedule:req.body.scheduleId});
 			console.log(foundPet, "<<< ===== pet before splice");
 			const index = foundPet.schedule.indexOf(req.body.scheduleId)
