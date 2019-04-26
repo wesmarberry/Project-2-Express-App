@@ -7,7 +7,9 @@ body{
 	flex-direction: column;
 	justify-content: space-around;
 */	color: black;
-	padding-top: 150px;
+	margin-top: 150px;
+	margin-bottom: 150px;
+	font-family: 'Playfair Display', serif;
 
 
 }
@@ -71,9 +73,9 @@ img {
 	padding: 5px;
 	margin: 5px;
 }
-a{
+nav a{
 	 text-decoration: none;
-	 color: white;
+	 color: #DCAE1D;
 }
 footer{
 	background-color: rgb(155, 117, 175);
@@ -84,12 +86,18 @@ footer{
 
 }
 
+.page-header {
+	font-weight: bold;
+}
+
 .nav {
 	position: fixed;
 	top: 0;
 	left: 0;
 	right: 0;
-
+	background-color: #00303F;
+	padding-left: 10px;
+	padding-bottom: 5px;
 }
 
 .login-header {
@@ -114,12 +122,65 @@ footer{
 	max-width: 150px;
 }
 
+.cool-button {
+	display: inline-block;
+	padding: 5px;
+	font-size: 12px;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	outline: none;
+	color: #AAAAAA;
+	background-color: #222222;
+	border: solid 3px #AAAAAA;
+	border-radius: 5px;
+	margin-top: 20px;
+	margin-left: 50px;
+}
+
+.cool-button:hover {
+	border: 5px solid #FFFFFF;
+	transition: background 0.25s linear;
+	-webkit-transition: background 0.25s linear;
+}
+
+.cool-button:active {
+	background-color: #00303F;
+	box-shadow: 0 5px #666;
+	transform: translatex(2px) translatey(3px);
+}
 
 
+.dog-panel {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
+	font-weight: bold;
+}
 
+.show-label {
+	font-weight: bold;
+}
 
+/*schedule styles*/
 
+.show-container {
+	display: flex;
+	justify-content: space-around;
+}
 
+.schedule-panel {
+	width: 300px;
+	height: 400px;
+	background-color: #00303F;
+	color: #DCAE1D;
+}
+
+.owner-link {
+	color: black;
+	border: 2px solid black;
+}
 
 
 
