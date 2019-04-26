@@ -5,12 +5,10 @@
 <div class="container">
 	<div class="dogPanel">
 		<div><%= pet.name%></div>
-		<div><img src="<%=pet.photo%>"></div>
+		<div><img src="/pets/<%=pet._id%>/photo"></div>
 		<div><%= pet.petKind%></div>
 		<div><%= pet.age%></div>
 		<div><%= pet.breed%></div>
-
-		
 
 		<%if (pet.owner === loggedInUser) {%>
 			<div><a href="/users/<%=pet.owner%>">User Home Page</a></div>

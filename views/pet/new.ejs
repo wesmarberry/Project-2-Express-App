@@ -2,14 +2,16 @@
 
 <h2>Add your Pet</h2>
 
-<form action="/pets" method="POST">
+<form action="/pets" method="POST" enctype="multipart/form-data">
 	<ul class="creatPetForm">
-		<input type="hidden" name="owner"    value="<%=user%>"></input>
+		<input type="hidden" name="owner" value="<%=user%>"></input>
 		<li>name:  	 <input type="text" name="name"    placeholder="e.g. Jax"></input></li>
 		<li>petKind: <input type="text" name="petKind" placeholder="e.g. Dog"></input></li>
 		<li>breed: 	 <input type="text" name="breed" placeholder="e.g. Border Collie"></input></li>
 		<li>age:	 <input type="text" name="age"   placeholder="e.g. 5 months"></input></li>
-		<li>photo:	 <input type="text" name="photo" placeholder="File to Upload"></input></li>
+
+		<li>photo:	<input type="file" name="photo"></input></li>
+
 	</ul>
 	<button>Create Puppy Dog</button>
 </form>

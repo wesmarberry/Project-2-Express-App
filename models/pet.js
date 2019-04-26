@@ -9,7 +9,9 @@ const petSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Schedule'
 	}],
-	photo:{type:String, required:true},
+	photo:{ 
+		data: Buffer,
+		contentType: String },
 	petKind: {type: String, required:true},
 	owner: String
 });
