@@ -1,12 +1,6 @@
 <%- include ../partials/header.ejs %>
 
-        <% if (logged === undefined) {%>
-            <a href="/users/new">Login/Register</a>
-
-        <% } else {%>
-            <a href="/users/<%=id%>/edit"><%=username%></a>
-            <a href="/users/logout">Log Out</a>
-        <%}%>
+        
         <div class="container">
             <div class="header-container">
                 <h1><%=user.username%></h1>    

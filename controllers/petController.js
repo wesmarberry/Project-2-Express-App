@@ -6,7 +6,7 @@ const Schedule = require('../models/schedule')
 const nodemailer	 = require('nodemailer')
 
 
-// smtp setup
+// mail notification set up
 
 const mailer = async (senderEmail, senderUsername, receiverEmail, subject, message) => {
 
@@ -56,7 +56,10 @@ router.get('/', async(req,res)=>{
 router.get('/new', (req,res)=>{
 
 	res.render('pet/new.ejs',{
-		user: req.session.userDbId
+		user: req.session.userDbId,
+		logged: req.session.logged,
+		username: req.session.username,
+		id: req.session.userDbId
 	})
 })
 
@@ -84,7 +87,10 @@ router.get('/:id', async(req,res)=>{
 			res.render('pet/show.ejs',{
 				pet: petFound,
 				loggedInUser: req.session.userDbId,
-				loggedInUsername: req.session.username
+				loggedInUsername: req.session.username,
+				logged: req.session.logged,
+				username: req.session.username,
+				id: req.session.userDbId
 			})  				
 	  }
 	  catch(err){
@@ -96,7 +102,10 @@ router.post('/:id/edit', async(req,res)=>{
 	  try{
 			const petToUpdate = await Pet.findOne({_id:req.params.id});
 			res.render('pet/edit.ejs',{
-				pet: petToUpdate
+				pet: petToUpdate,
+				logged: req.session.logged,
+				username: req.session.username,
+				id: req.session.userDbId
 			})  				
 	  }
 	  catch(err){
