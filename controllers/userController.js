@@ -30,7 +30,7 @@ const upload = multer({
 	fileFilter:(req,file,callback)=>{
 		checkFileType(file,callback)
 	}
-}).single('photo');
+})//.single('photo');
 
 
 const checkFileType = (file,callback) =>{
@@ -51,87 +51,90 @@ const checkFileType = (file,callback) =>{
 	}
 }
 
-
+let message
 // login and register route
 router.get('/new', (req, res) => {
 	res.render('user/new.ejs', {
 		message: req.session.message,
 		logged: req.session.logged,
 		username: req.session.username,
-		id: req.session.userDbId
+		id: req.session.userDbId,
+		msg: message
 	})		
 })
 
 
 // route to register a new user
-router.post('/register', async (req, res, next) => {
+router.post('/register', upload.single('photo'), async(req, res, next) => {
 
-	upload(req, res, (err)=>{
-		if (err){
-			console.log(err);
-			res.render('user/new.ejs', {
-				message: req.session.message,
-				logged: req.session.logged,
-				username: req.session.username,
-				id: req.session.userDbId,
-				msg: err
-			})
-		}
-		else{
-			console.log(req.file);
-			res.send("file ok")
-		}
-	})
+	console.log('req.body=======');
+	console.log(req.body);
+	console.log('req.file=======');
+	console.log(req.file);
 
 
+	
 
- //  // first we must hash the password
- //  const password = req.body.password;
- //  // the password has is what we want to put in the database
+  // first we must hash the password
+  const password = req.body.password;
+  // the password has is what we want to put in the database
   
- //  const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+  const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 
- //  // setting the filePath for the users photo
- //  const filePath = './' + req.file.path
+  // setting the filePath for the users photo
+  const filePath = './' + req.file.path
 
- //  // create and object for the db entry
- //  const userDbEntry = {};
- //  userDbEntry.username = req.body.username;
- //  userDbEntry.password = passwordHash;
- //  userDbEntry.name = req.body.name;
- //  userDbEntry.email = req.body.email;
- //  userDbEntry.phone = req.body.phone;
- //  userDbEntry.zipcode = req.body.zipcode;
- //  // userDbEntry.photo = req.body.photo;
+  // create and object for the db entry
+  const userDbEntry = {};
+  userDbEntry.username = req.body.username;
+  userDbEntry.password = passwordHash;
+  userDbEntry.name = req.body.name;
+  userDbEntry.email = req.body.email;
+  userDbEntry.phone = req.body.phone;
+  userDbEntry.zipcode = req.body.zipcode;
+  // userDbEntry.photo = req.body.photo;
   
 
- //  try {
+  try {
 
- //    const createdUser = await User.create(userDbEntry)
-    
- //    createdUser.photo.data = fs.readFileSync(filePath);
-    
- //    createdUser.save()
+  // 		upload(req, res, (err)=>{
+		// 	if (err){
+		// 		console.log(err);
+		// 		message = err
+		// 		res.rendirect('/users/new')
+		// 	}
+		// 	else{
+		// 		console.log(req.file);
+		// 	}
+		// })
 
- //    console.log('createdUser==================');
- //    console.log(createdUser);
 
- //    req.session.logged = true;
- //    req.session.userDbId = createdUser._id
- //    req.session.username = createdUser.username
- //    req.session.message = ''
- //    req.session.updated = ''
+	    const createdUser = await User.create(userDbEntry)
+	    
+	    createdUser.photo.data = fs.readFileSync(filePath);
+	    
+	    createdUser.save()
 
- //    fs.unlink(filePath, (err) => {
- //    	if(err) next(err);
-	// })
+	    console.log('createdUser==================');
+	    console.log(createdUser);
 
- //    res.redirect('/users')
+	    req.session.logged = true;
+	    req.session.userDbId = createdUser._id
+	    req.session.username = createdUser.username
+	    req.session.message = ''
+	    req.session.updated = ''
+
+	 //    fs.unlink(filePath, (err) => {
+	 //    	if(err) next(err);
+		// })
+
+	    res.redirect('/users')
   
- //  } catch (err) {
- //    next(err)
- //  }
-	// 	}
+  } catch (err) {
+
+    	next(err)
+  }
+		
 
 
 })
