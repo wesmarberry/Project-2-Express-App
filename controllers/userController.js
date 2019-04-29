@@ -13,12 +13,11 @@ const fs = require('fs');
 //using the method path.extname().
 const path = require('path');
 
-// console.log(x);
 //setting storage engine
 const storageEngine = multer.diskStorage({
 	destination: './uploads/',
-	filename: (req,file,cb)=>{
-		cb(null,file.fieldname + "-" +Date.now() + path.extname(file.originalname))
+	filename: (req,file,callback)=>{
+		callback(null,file.fieldname + "-" +Date.now() + path.extname(file.originalname))
 	}
 });
 
@@ -26,29 +25,31 @@ const storageEngine = multer.diskStorage({
 const upload = multer({
 	storage: storageEngine,
 	limits: {fileSize: 1000000},
-	fileFilter:(req,file,cb)=>{
-	
-			// setting a expression of allowed extensions
-			const fileTypes = /jpeg|jpg|png|gif/;
-
-			const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
-
-			const mimeType = fileTypes.test(file.mimetype)
-
-			if (extName && mimeType){
-				return cb(null,true)
-			}
-			else{
-				console.log("ERRRRORRRRRR");
-				cb('Error: File is not a image')
-			}
-		
+	fileFilter:(req,file,callback)=>{
+		checkFileType(file,callback)
 	}
 })//.single('photo');
 
 
+const checkFileType = (file,callback) =>{
+	// setting a expression of allowed extensions
+	const fileTypes = /jpeg|jpg|png|gif/;
 
-let message;
+	const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
+
+	const mimeType = fileTypes.test(file.mimetype)
+
+
+	if (extName && mimeType){
+		return callback(null,true)
+	}
+	else{
+		console.log("ERRRRORRRRRR");
+		callback('Error: File is not a image')
+	}
+}
+
+let message
 // login and register route
 router.get('/new', (req, res) => {
 	res.render('user/new.ejs', {
@@ -64,7 +65,6 @@ router.get('/new', (req, res) => {
 // route to register a new user
 router.post('/register', upload.single('photo'), async(req, res, next) => {
 
-	
 	console.log('req.body=======');
 	console.log(req.body);
 	console.log('req.file=======');
@@ -140,9 +140,7 @@ router.post('/register', upload.single('photo'), async(req, res, next) => {
   
   } catch (err) {
 
-    	message = err
-    	console.log(message);
-		res.rendirect('/users/new')
+    	next(err)
   }
 		
 
@@ -330,7 +328,6 @@ router.delete('/:id', async (req, res, next) => {
 	          $in: foundUser.pets 
 	        }
 		})
-		req.session.destroy()
 		res.redirect('/users')
 	} catch (err) {
 		next(err)

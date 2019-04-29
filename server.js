@@ -8,7 +8,7 @@ require('./db/db')
 
 const petController = require('./controllers/petController')
 const userController = require('./controllers/userController')
-
+const authController = require('./controllers/authController')
 
 // middleware
 app.use(bodyParser.urlencoded({extended: false}));
@@ -25,6 +25,7 @@ app.use(session({
 
 app.use('/pets', petController);
 app.use('/users', userController);
+app.use('/auth', authController);
 
 app.listen(3000, () => {
   console.log('listening... on port: ', 3000);
