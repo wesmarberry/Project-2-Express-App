@@ -8,12 +8,10 @@ const multer = require('multer');
 const fs = require('fs');
 // const x = require('../public/js/app');
 
-//core node.js module that provides utilities for working with file and directory paths
-// in our case we will use this module to catch the extension from the upload file
+//path is a core node.js module that provides utilities for working with file and directory paths
+// in our case we will use this module to catch the extension from the uploaded file
 //using the method path.extname().
 const path = require('path');
-
-
 
 //setting storage engine
 const storageEngine = multer.diskStorage({
@@ -82,7 +80,15 @@ router.post('/register', upload.single('photo'), async(req, res, next) => {
   const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 
   // setting the filePath for the users photo
-  const filePath = './' + req.file.path
+  let filePath;
+  if (req.file){
+  	filePath = './' + req.file.path;
+  }
+  else{
+  	filePath = './public/images/no-profile-picture-icon.jpg';
+  	console.log(filePath);
+  }
+  console.log("====filename=====", filePath);
 
   // create and object for the db entry
   const userDbEntry = {};
@@ -124,9 +130,11 @@ router.post('/register', upload.single('photo'), async(req, res, next) => {
 	    req.session.message = ''
 	    req.session.updated = ''
 
-	 //    fs.unlink(filePath, (err) => {
-	 //    	if(err) next(err);
-		// })
+	    if (filePath !== './public/images/no-profile-picture-icon.jpg'){
+		    fs.unlink(filePath, (err) => {
+		    	if(err) next(err);
+			})
+	    }
 
 	    res.redirect('/users')
   
@@ -275,12 +283,36 @@ router.get('/:id/edit', async (req, res, next) => {
 
 // update route
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', upload.single('photo'), async (req, res, next) => {
 	try {
+
+
+
+		console.log('======req.body==== : ',req.body);
+
+		let filePath;
+  		if (req.file){
+  			filePath = './' + req.file.path;
+  		    console.log("====filename=====", filePath);
+  		}
+  		
+
 		const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})
+
+
+		if (req.file){
+ 		    updatedUser.photo.data = fs.readFileSync(filePath);
+ 		    updatedUser.save();
+		    fs.unlink(filePath, (err) => {
+		    	if(err) next(err);
+			})
+	    }
+
+
 		req.session.updated = req.session.username + ' was updated!'
 		res.redirect('/users/' + req.params.id + '/edit')
 		req.session.updated = ''
+
 	} catch (err) {
 		next(err)
 	}	
