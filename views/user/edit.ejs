@@ -1,5 +1,5 @@
 <%- include ../partials/header.ejs %>
-        <div class='rating-container'
+        <div class='rating-container'>
             <%let sum = 0%>    
                 <%for (let i = 0; i < user.reviews.length; i++) {%>
                     <%sum += Number(user.reviews[i].rating) %>
@@ -8,7 +8,7 @@
                 <%if (overallRating === 'NaN') {%>
                     <h2 class='rating'>Rating: No Rating</h2>
                 <%} else {%> 
-                    <h2>Overall Rating: <%=overallRating%></h2>
+                    <h2>Rating: <%=overallRating%></h2>
                 <%}%>    
         </div>        
     <div class="overall-container">  
@@ -16,7 +16,7 @@
             
 
             <h1><%=user.username%>'s Pets</h1>
-            <ul class="pets-ul">
+            <ul class="pets-ul1">
                 <% for(let i = 0; i < user.pets.length; i++){ %>
                     <li class="pets-li">
                         <a href="/pets/<%=user.pets[i]._id%>">
@@ -26,7 +26,7 @@
                 <% } %>
             </ul>
             <section>
-                <a href="/pets/new">Add New Pet</a>
+                <a class='owner-link' href="/pets/new">Add New Pet</a>
             </section>
         </div>
 
@@ -50,13 +50,11 @@
                     <br>
 
 
-                    <button type="submit">Update</button>
-                  </form>
-                <section>
-                    <form action="/users/<%=user._id%>?_method=DELETE" method="POST">
-                      <button type="submit">Delete Account</button>
+                    <button class='cool-propose-button' id='update-user-button' type="submit">Update</button>
                     </form>
-                </section>
+                    <form action="/users/<%=user._id%>?_method=DELETE" method="POST">
+                      <button class='cool-propose-button' type="submit">Delete Account</button>
+                    </form>
 
             </div>
         </div>
@@ -64,12 +62,14 @@
 
         <div class='review-container'>
             <h3 class='schedule-header'>Reviews</h3>
+            <ul class="schedule-ul">
                 <% for(let i = 0; i < user.reviews.length; i++){ %>
-                    <li>
+                    <li class='review-li'>
                         "<%=user.reviews[i].text%>" - <%=user.reviews[i].userReviewing%></br>
                         Rating: <%=user.reviews[i].rating%>
                     </li>
                 <% } %>
+            </ul>    
         </div>
 
     </div>      

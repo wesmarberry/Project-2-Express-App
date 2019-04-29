@@ -1,54 +1,65 @@
 <%- include ../partials/header.ejs %>
-
+<div class='rating-container'>
+    <%let sum = 0%>    
+        <%for (let i = 0; i < user.reviews.length; i++) {%>
+            <%sum += Number(user.reviews[i].rating) %>
+        <%}%>
+        <%const overallRating = (sum/user.reviews.length).toFixed(1)%>
+        <%if (overallRating === 'NaN') {%>
+            <h2 class='rating'>Rating: No Rating</h2>
+        <%} else {%> 
+            <h2>Rating: <%=overallRating%></h2>
+        <%}%>    
+</div>
         
-        <div class="container">
-            <div class="header-container">
-                <h1><%=user.username%></h1>
-                <%let sum = 0%>    
-                <%for (let i = 0; i < user.reviews.length; i++) {%>
-                    <%sum += Number(user.reviews[i].rating) %>
-                <%}%>
-                <%const overallRating = (sum/user.reviews.length).toFixed(1)%>
-                <h2>Rating: <%=overallRating%></h2>
-            </div>
-            <section>
-                <a href="/users">Home</a>
-
-            </section>
+        <div class="overall-container">
+            
+            <div class="user-pets-container">
             <h1><%=user.username%>'s Pets</h1>
-            <ul>
+            <ul class="pets-ul1">
                 <% for(let i = 0; i < user.pets.length; i++){ %>
-                    <li>
+                    <li class="pets-li">
                         <a href="/pets/<%=user.pets[i]._id%>">
-                            <img src="/pets/<%=user.pets[i]._id%>/photo">
+                            <img class='pet-img1'src="/pets/<%=user.pets[i]._id%>/photo">
                         </a></br>
                     </li>
                 <% } %>
             </ul>
-        </div>
+            </div>
 
-        <div class="user-info">
-            <img src="/users/<%=user._id%>/photo">
-            <ul>
+        <div class="user-container">
+            <div class="inner-container">
+            <div class="header-container">
+                <h1><%=user.username%></h1>
+            </div>
+            <img class='user-photo' src="/users/<%=user._id%>/photo">
+            <ul class='user-show-ul'>
                 <li>Name: <%=user.name%></li>
                 <li>Email: <%=user.email%></li>
                 <li>Zipcode: <%=user.zipcode%></li>
             </ul>
-
+        </div>
+        </div>
+        <div class="review-container-overall">
+        <div class="review-container">
+            <h3 class='schedule-header'>Reviews</h3>
+            <div>
+                <ul class='schedule-ul'>
+                    <% for(let i = (user.reviews.length - 1); i >=0; i--){ %>
+                        <li class='review-li'>
+                            "<%=user.reviews[i].text%>" - <%=user.reviews[i].userReviewing%></br>
+                            Rating: <%=user.reviews[i].rating%>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
         </div>
 
-        <div class="review">
-
-            <div>
-                <% for(let i = 0; i < user.reviews.length; i++){ %>
-                    <li>
-                        "<%=user.reviews[i].text%>" - <%=user.reviews[i].userReviewing%></br>
-                        Rating: <%=user.reviews[i].rating%>
-                    </li>
-                <% } %>
-            </div>
-            <form action='/users/review' method='POST'>
-                <textarea name='text'></textarea>
+        <form class='review-form' action='/users/review' method='POST'>
+            <h6>Review</h6>
+            <textarea name='text'></textarea>
+            <h6>Rating</h6>
+            <div class="radio-container">
                 <input type='radio' id='0' name='rating' value='0'>
                 <label for='0'>0</label>
                 <input type='radio' id='1' name='rating' value='1'>
@@ -63,8 +74,9 @@
                 <label for='5'>5</label>
                 <input type='hidden' name='userReviewing' value='<%=username%>'>
                 <input type='hidden' name='userReviewed' value='<%=user._id%>'>
-                <button type='submit'>Submit Review</button>
-            </form>
-
+            </div>
+            <button class='cool-propose-button' id='submit-review-button' type='submit'>Submit Review</button>
+        </form>
         </div>
+    </div>
 <%- include ../partials/footer.ejs %>
