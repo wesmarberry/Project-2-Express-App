@@ -268,6 +268,13 @@ router.get('/:id', async (req, res, next) => {
 // edit route
 
 router.get('/:id/edit', async (req, res, next) => {
+	if (req.session.updated === true) {
+		req.session.updatedMsg = req.session.username + ' was updated!'
+		req.session.updated = false
+	} else {
+		req.session.updatedMsg = ''
+	}
+
 	try {
 		const foundUser = await User.findById(req.params.id).populate('pets').populate('reviews')
 		console.log(foundUser);
@@ -276,7 +283,7 @@ router.get('/:id/edit', async (req, res, next) => {
 			logged: req.session.logged,
 			id: req.session.userDbId,
 			username: req.session.username,
-			updated: req.session.updated
+			updated: req.session.updatedMsg
 		})
 	} catch (err) {
 		next(err)
@@ -310,10 +317,10 @@ router.put('/:id', upload.single('photo'), async (req, res, next) => {
 			})
 	    }
 
-
-		req.session.updated = req.session.username + ' was updated!'
+	    req.session.updated = true
+		console.log(req.session.updated);
 		res.redirect('/users/' + req.params.id + '/edit')
-		req.session.updated = ''
+		console.log(req.session.updated);
 
 	} catch (err) {
 		next(err)

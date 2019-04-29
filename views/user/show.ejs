@@ -9,7 +9,7 @@
                     <%sum += Number(user.reviews[i].rating) %>
                 <%}%>
                 <%const overallRating = (sum/user.reviews.length).toFixed(1)%>
-                <h2>Overall Rating: <%=overallRating%></h2>
+                <h2>Rating: <%=overallRating%></h2>
             </div>
             <section>
                 <a href="/users">Home</a>

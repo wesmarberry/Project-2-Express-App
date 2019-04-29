@@ -1,31 +1,26 @@
 <%- include ../partials/header.ejs %>
-
-        
-        <div class="container">
-            <div class="header-container">
-                <h1><%=user.username%></h1>    
-
-            </div>
-            <section>
-                <a href="/users">Home</a>
-
-            </section>
-            <h1><%=user.username%>'s Pets</h1>
+        <div class='rating-container'
             <%let sum = 0%>    
                 <%for (let i = 0; i < user.reviews.length; i++) {%>
                     <%sum += Number(user.reviews[i].rating) %>
                 <%}%>
                 <%const overallRating = (sum/user.reviews.length).toFixed(1)%>
                 <%if (overallRating === 'NaN') {%>
-                    <h2>Overall Rating: No Reviews</h2>
+                    <h2 class='rating'>Rating: No Rating</h2>
                 <%} else {%> 
                     <h2>Overall Rating: <%=overallRating%></h2>
                 <%}%>    
-            <ul>
+        </div>        
+    <div class="overall-container">  
+        <div class="user-pets-container">
+            
+
+            <h1><%=user.username%>'s Pets</h1>
+            <ul class="pets-ul">
                 <% for(let i = 0; i < user.pets.length; i++){ %>
-                    <li>
+                    <li class="pets-li">
                         <a href="/pets/<%=user.pets[i]._id%>">
-                            <img src="/pets/<%=user.pets[i]._id%>/photo">
+                            <img class='pet-img1' src="/pets/<%=user.pets[i]._id%>/photo">
                         </a></br>
                     </li>
                 <% } %>
@@ -34,34 +29,48 @@
                 <a href="/pets/new">Add New Pet</a>
             </section>
         </div>
-        <small><%=updated%></small>
-        <div class="user-info">
-            <img src="/users/<%=user._id%>/photo">
-              <form action="/users/<%=user._id%>?_method=PUT" method="POST" enctype="multipart/form-data">
-                <input type="text" name="username" value="<%=user.username%>">
-                <input type="text" name="name" value="<%=user.name%>">
-                <input type="email" name="email" value="<%=user.email%>">
-                <input type="text" name="phone" value="<%=user.phone%>">
-                <input type="text" name="zipcode" value="<%=user.zipcode%>">
-                <input type="file" name="photo">
-                <strong><%= typeof msg != 'undefined' ? msg : ''%></strong>
-                <br>
 
 
-                <button type="submit">Update</button>
-              </form>
+        <div class="user-container">
+            <div class="inner-container">
+                <div class="header-container">
+                    <h1><%=user.username%></h1>    
+
+                </div>
+                <small><%=updated%></small>
+                <img class='user-photo' src="/users/<%=user._id%>/photo">
+                  <form class='update-user-form' action="/users/<%=user._id%>?_method=PUT" method="POST" enctype="multipart/form-data">
+                    <input type="text" name="username" value="<%=user.username%>">
+                    <input type="text" name="name" value="<%=user.name%>">
+                    <input type="email" name="email" value="<%=user.email%>">
+                    <input type="text" name="phone" value="<%=user.phone%>">
+                    <input type="text" name="zipcode" value="<%=user.zipcode%>">
+                    <input type="file" name="photo">
+                    <strong><%= typeof msg != 'undefined' ? msg : ''%></strong>
+                    <br>
+
+
+                    <button type="submit">Update</button>
+                  </form>
+                <section>
+                    <form action="/users/<%=user._id%>?_method=DELETE" method="POST">
+                      <button type="submit">Delete Account</button>
+                    </form>
+                </section>
+
+            </div>
         </div>
-        <section>
-            <form action="/users/<%=user._id%>?_method=DELETE" method="POST">
-              <button type="submit">Delete Account</button>
-            </form>
-        </section>
-        <div>
+
+
+        <div class='review-container'>
+            <h3 class='schedule-header'>Reviews</h3>
                 <% for(let i = 0; i < user.reviews.length; i++){ %>
                     <li>
                         "<%=user.reviews[i].text%>" - <%=user.reviews[i].userReviewing%></br>
                         Rating: <%=user.reviews[i].rating%>
                     </li>
                 <% } %>
-            </div>
+        </div>
+
+    </div>      
 <%- include ../partials/footer.ejs %>
