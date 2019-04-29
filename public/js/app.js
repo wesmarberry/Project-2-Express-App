@@ -11,10 +11,10 @@ function onSuccess(googleUser) {
 	profile.email = googleUser.getBasicProfile().getEmail();
 
 
-	// console.log('Full Name: ' + googleUser.getBasicProfile().getName());
-	// console.log('Given Name: ' + googleUser.getBasicProfile().getGivenName());
-	// console.log('Image URL: ' + googleUser.getBasicProfile().getImageUrl());
-	// console.log('Email: ' + googleUser.getBasicProfile().getEmail());
+	console.log('Full Name: ' + googleUser.getBasicProfile().getName());
+	console.log('Given Name: ' + googleUser.getBasicProfile().getGivenName());
+	console.log('Image URL: ' + googleUser.getBasicProfile().getImageUrl());
+	console.log('Email: ' + googleUser.getBasicProfile().getEmail());
 }
 function onFailure(error) {
   console.log(error);

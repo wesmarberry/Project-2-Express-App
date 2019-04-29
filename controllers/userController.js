@@ -13,11 +13,12 @@ const fs = require('fs');
 //using the method path.extname().
 const path = require('path');
 
+// console.log(x);
 //setting storage engine
 const storageEngine = multer.diskStorage({
 	destination: './uploads/',
-	filename: (req,file,callback)=>{
-		callback(null,file.fieldname + "-" +Date.now() + path.extname(file.originalname))
+	filename: (req,file,cb)=>{
+		cb(null,file.fieldname + "-" +Date.now() + path.extname(file.originalname))
 	}
 });
 
@@ -25,31 +26,29 @@ const storageEngine = multer.diskStorage({
 const upload = multer({
 	storage: storageEngine,
 	limits: {fileSize: 1000000},
-	fileFilter:(req,file,callback)=>{
-		checkFileType(file,callback)
+	fileFilter:(req,file,cb)=>{
+	
+			// setting a expression of allowed extensions
+			const fileTypes = /jpeg|jpg|png|gif/;
+
+			const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
+
+			const mimeType = fileTypes.test(file.mimetype)
+
+			if (extName && mimeType){
+				return cb(null,true)
+			}
+			else{
+				console.log("ERRRRORRRRRR");
+				cb('Error: File is not a image')
+			}
+		
 	}
 })//.single('photo');
 
 
-const checkFileType = (file,callback) =>{
-	// setting a expression of allowed extensions
-	const fileTypes = /jpeg|jpg|png|gif/;
 
-	const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
-
-	const mimeType = fileTypes.test(file.mimetype)
-
-
-	if (extName && mimeType){
-		return callback(null,true)
-	}
-	else{
-		console.log("ERRRRORRRRRR");
-		callback('Error: File is not a image')
-	}
-}
-
-let message
+let message;
 // login and register route
 router.get('/new', (req, res) => {
 	res.render('user/new.ejs', {
@@ -65,6 +64,7 @@ router.get('/new', (req, res) => {
 // route to register a new user
 router.post('/register', upload.single('photo'), async(req, res, next) => {
 
+	
 	console.log('req.body=======');
 	console.log(req.body);
 	console.log('req.file=======');
@@ -140,7 +140,9 @@ router.post('/register', upload.single('photo'), async(req, res, next) => {
   
   } catch (err) {
 
-    	next(err)
+    	message = err
+    	console.log(message);
+		res.rendirect('/users/new')
   }
 		
 
