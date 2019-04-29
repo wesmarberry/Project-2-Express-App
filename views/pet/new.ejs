@@ -1,21 +1,25 @@
 <%- include ../partials/header.ejs %>
 
-<h2>Add your Pet</h2>
+<div class='new-pet-container'>
+	<div class='new-inner-container'>
+		<h2 class="schedule-header">Add Your Pet</h2>
 
-<form action="/pets" method="POST" enctype="multipart/form-data">
-	<ul class="creatPetForm">
-		<input type="hidden" name="owner" value="<%=user%>"></input>
-		<li>name:  	 <input type="text" name="name"    placeholder="e.g. Jax"></input></li>
-		<li>petKind: <input type="text" name="petKind" placeholder="e.g. Dog"></input></li>
-		<li>breed: 	 <input type="text" name="breed" placeholder="e.g. Border Collie"></input></li>
-		<li>age:	 <input type="text" name="age"   placeholder="e.g. 5 months"></input></li>
 
-		<li>photo:	<input type="file" name="photo"></input></li>
+		<form action="/pets" method="POST" enctype="multipart/form-data">
+			<ul class="creatPetForm">
+				<input type="hidden" name="owner" value="<%=user%>"></input>
+				<li>Name:  	 <input class='new-input' type="text" name="name"    placeholder="e.g. Jax"></input></li>
+				<li>Kind: <input class='new-input' type="text" name="petKind" placeholder="e.g. Dog"></input></li>
+				<li>Breed: 	 <input class='new-input' type="text" name="breed" placeholder="e.g. Border Collie"></input></li>
+				<li>Age:	 <input class='new-input' type="text" name="age"   placeholder="e.g. 5 months"></input></li>
 
-	</ul>
-	<button>Create Puppy Dog</button>
-</form>
+				<li>Photo:	<input class='new-input' type="file" name="photo"></input></li>
 
+			</ul>
+			<button class="cool-propose-button" id='add-pet-button'>Add Your Pet</button>
+		</form>
+	</div>
+</div>
 <%- include ../partials/footer.ejs %>
 
 

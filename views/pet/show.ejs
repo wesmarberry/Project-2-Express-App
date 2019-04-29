@@ -28,9 +28,9 @@
 
 	<div class="schedule">
 		<div class="schedule-panel">
-			<h3>Schedule</h3>
-			<ul>
-			<% for (let i = 0 ; i < pet.schedule.length; i++) {%>
+			<h3 class='schedule-header'>Schedule</h3>
+			<ul class='schedule-ul'>
+			<% for (let i = (pet.schedule.length - 1) ; i >= 0; i--) {%>
 				 <%let status = ""%>
 				 <%if (pet.schedule[i].booked === false){%>
 						<%status = "Pending"%>
@@ -43,28 +43,29 @@
 
 
 				<%if (pet.owner === loggedInUser && pet.schedule[i].booked === false){%>
-
-						<form action="/pets/schedule/a?_method=PUT" method="POST">
-							<input type="hidden" name="scheduleId" value="<%=pet.schedule[i]._id%>">
-							<button>accept</button>
-						</form>
-						<form action="/pets/schedule/d?_method=PUT" method="POST">
-							<input type="hidden" name="scheduleId" value="<%=pet.schedule[i]._id%>">
-							<button>decline</button>
-						</form>
+						<div class='accept-decline-container'>
+							<form action="/pets/schedule/a?_method=PUT" method="POST">
+								<input type="hidden" name="scheduleId" value="<%=pet.schedule[i]._id%>">
+								<button class='cool-propose-button'>accept</button>
+							</form>
+							<form action="/pets/schedule/d?_method=PUT" method="POST">
+								<input  type="hidden" name="scheduleId" value="<%=pet.schedule[i]._id%>">
+								<button class='cool-propose-button'>decline</button>
+							</form>
+						</div>
 					<%} %>
 			<%}%>
 			</ul>
 		</div>
 		<% if (pet.owner !== loggedInUser && logged !== undefined){%>
-			<form action='/pets/schedule' method='POST'>
+			<form class='schedule-form' action='/pets/schedule' method='POST'>
 				<input type="text" name="date" placeholder='date i.e. 4/25'>
 				<input type="text" name="time" placeholder="time i.e. 4PM-5PM">
 				<input type='hidden' name='proposerId' value='<%=loggedInUser%>'>
 				<input type='hidden' name='petOwnerId' value='<%=pet.owner%>'>
 				<input type='hidden' name='proposerUsername' value='<%=loggedInUsername%>'>
 				<input type='hidden' name='pet' value='<%=pet._id%>'>
-				<button type="submit">Propose Time</button>
+				<button class='cool-propose-button' type="submit">Propose Time</button>
 			</form>
 		<%}%>
 	</div>

@@ -56,6 +56,7 @@ div::after {
 .creatPetForm{
 	display: flex;
 	flex-direction: column;
+	list-style: none;
 }
 .indexDogPanel{
 	display: flex;
@@ -174,9 +175,12 @@ footer{
 
 .schedule-panel {
 	width: 300px;
-	height: 400px;
+	height: 300px;
 	background-color: #00303F;
 	color: #DCAE1D;
+	border-radius: 10px;
+	box-shadow: 5px 5px black;
+	overflow: auto;
 }
 
 .owner-link {
@@ -184,11 +188,97 @@ footer{
 	border: 2px solid black;
 }
 
+.schedule-header {
+	text-align: center;
+	padding-top: 10px;
+	text-decoration: underline;
+}
 
+.schedule-ul {
+	list-style: none;
 
+}
 
+.schedule-form {
+	display: flex;
+	flex-direction: column;
+	margin-top: 5px;
+}
 
+.schedule-form input {
+	margin-top: 5px;
+	border-radius: 4px;
+	background-color: #00303F;
+	color: #DCAE1D;
+	display: flex;
+	justify-content: center;
+}
+.schedule-form button {
+	margin-top: 5px;
+}
 
+.cool-propose-button {
+	display: inline-block;
+	padding: 5px;
+	font-size: 12px;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	outline: none;
+	color: #AAAAAA;
+	background-color: #222222;
+	border: solid 3px #AAAAAA;
+	border-radius: 5px;
+	margin-top: 20px;
+	/*margin-left: 50px;*/
+}
+
+.cool-propose-button:hover {
+	border: 3px solid #FFFFFF;
+	transition: background 0.25s linear;
+	-webkit-transition: background 0.25s linear;
+}
+
+.cool-propose-button:active {
+	background-color: #00303F;
+	box-shadow: 0 5px #666;
+	transform: translatex(1px) translatey(2px);
+}
+
+.accept-decline-container {
+	display: flex;
+/*	justify-content: flex-start;*/
+	flex-direction: row;
+	margin-top: -20px;
+}
+
+.new-pet-container {
+	display: flex;
+	justify-content: center;
+	/*flex-direction: column;*/
+}
+
+.new-inner-container {
+	display: flex;
+	flex-direction: column;
+	background-color: #00303F;
+	color: #DCAE1D;
+	border-radius: 10px;
+	box-shadow: 5px 5px black;
+}
+
+.new-input {
+	margin-top: 10px;
+	margin-left: 5px;
+	border-radius: 4px;
+	background-color: #00303F;
+	color: white;
+}
+
+#add-pet-button {
+	margin-left: 150px;
+	margin-bottom: 10px;
+}
 
 
 
