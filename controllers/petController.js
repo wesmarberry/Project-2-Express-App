@@ -11,6 +11,9 @@ const fs = require('fs');
 
 // mail notification set up
 
+
+
+
 const mailer = async (senderEmail, senderUsername, receiverEmail, subject, message) => {
 
 	// let testAccount = await nodemailer.createTestAccount()
@@ -36,6 +39,7 @@ router.get('/', async(req,res)=>{
 	  try{
 	  		const allPets = await Pet.find({});
 	  		res.render('pet/index.ejs',{
+	  			logged: req.session.logged,
 	  			pets: allPets
 	  		});
 	  }
@@ -75,13 +79,7 @@ router.delete('/:id', async(req,res)=>{
 router.get('/:id/photo', async(req,res, next) => {
 	
 	  try{
-
-	  	console.log('===== hit the photo route ========');
-
-	  	
 	  		const foundPet = await Pet.findById(req.params.id);
-			console.log('foundPet');
-			console.log(foundPet);
 			res.set('Content-Type', foundPet.photo.contentType)
 			
 			res.send(foundPet.photo.data)
@@ -96,8 +94,7 @@ router.get('/:id/photo', async(req,res, next) => {
 router.get('/:id', async(req,res)=>{
 	  try{
 			const petFound = await Pet.findOne({_id:req.params.id}).populate('schedule')
-			console.log(req.session);
-			console.log(req.session.logged);
+
 			res.render('pet/show.ejs',{
 				pet: petFound,
 				loggedInUser: req.session.userDbId,

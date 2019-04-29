@@ -5,8 +5,51 @@ const Pet = require('../models/pet');
 const Review = require('../models/review');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/'})
 const fs = require('fs');
+// const x = require('../public/js/app');
+
+//core node.js module that provides utilities for working with file and directory paths
+// in our case we will use this module to catch the extension from the upload file
+//using the method path.extname().
+const path = require('path');
+
+
+
+//setting storage engine
+const storageEngine = multer.diskStorage({
+	destination: './uploads/',
+	filename: (req,file,callback)=>{
+		callback(null,file.fieldname + "-" +Date.now() + path.extname(file.originalname))
+	}
+});
+
+//init upload
+const upload = multer({
+	storage: storageEngine,
+	limits: {fileSize: 1000000},
+	fileFilter:(req,file,callback)=>{
+		checkFileType(file,callback)
+	}
+}).single('photo');
+
+
+const checkFileType = (file,callback) =>{
+	// setting a expression of allowed extensions
+	const fileTypes = /jpeg|jpg|png|gif/;
+
+	const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
+
+	const mimeType = fileTypes.test(file.mimetype)
+
+
+	if (extName && mimeType){
+		return callback(null,true)
+	}
+	else{
+		console.log("ERRRRORRRRRR");
+		callback('Error: File is not a image')
+	}
+}
 
 
 // login and register route
@@ -21,56 +64,74 @@ router.get('/new', (req, res) => {
 
 
 // route to register a new user
-router.post('/register', upload.single('photo'), async (req, res, next) => {
-  console.log(req.body);
-  console.log(req.file)
-  // first we must hash the password
-  const password = req.body.password;
-  // the password has is what we want to put in the database
-  console.log('bcrypt=========before');
-  console.log(req.body);
-  
-  const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+router.post('/register', async (req, res, next) => {
 
-  console.log('bcrypt=========after');
-  // setting the filePath for the users photo
-  const filePath = './' + req.file.path
-
-  // create and object for the db entry
-  const userDbEntry = {};
-  userDbEntry.username = req.body.username;
-  userDbEntry.password = passwordHash;
-  userDbEntry.name = req.body.name;
-  userDbEntry.email = req.body.email;
-  userDbEntry.phone = req.body.phone;
-  userDbEntry.zipcode = req.body.zipcode;
-  // userDbEntry.photo = req.body.photo;
-  
-
-  try {
-
-    const createdUser = await User.create(userDbEntry)
-     createdUser.photo.data = fs.readFileSync(filePath);
-     createdUser.save()
-
-    console.log('createdUser==================');
-    console.log(createdUser);
-
-    req.session.logged = true;
-    req.session.userDbId = createdUser._id
-    req.session.username = createdUser.username
-    req.session.message = ''
-    req.session.updated = ''
-
-    fs.unlink(filePath, (err) => {
-    	if(err) next(err);
+	upload(req, res, (err)=>{
+		if (err){
+			console.log(err);
+			res.render('user/new.ejs', {
+				message: req.session.message,
+				logged: req.session.logged,
+				username: req.session.username,
+				id: req.session.userDbId,
+				msg: err
+			})
+		}
+		else{
+			console.log(req.file);
+			res.send("file ok")
+		}
 	})
 
-    res.redirect('/users')
+
+
+ //  // first we must hash the password
+ //  const password = req.body.password;
+ //  // the password has is what we want to put in the database
   
-  } catch (err) {
-    next(err)
-  }
+ //  const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+
+ //  // setting the filePath for the users photo
+ //  const filePath = './' + req.file.path
+
+ //  // create and object for the db entry
+ //  const userDbEntry = {};
+ //  userDbEntry.username = req.body.username;
+ //  userDbEntry.password = passwordHash;
+ //  userDbEntry.name = req.body.name;
+ //  userDbEntry.email = req.body.email;
+ //  userDbEntry.phone = req.body.phone;
+ //  userDbEntry.zipcode = req.body.zipcode;
+ //  // userDbEntry.photo = req.body.photo;
+  
+
+ //  try {
+
+ //    const createdUser = await User.create(userDbEntry)
+    
+ //    createdUser.photo.data = fs.readFileSync(filePath);
+    
+ //    createdUser.save()
+
+ //    console.log('createdUser==================');
+ //    console.log(createdUser);
+
+ //    req.session.logged = true;
+ //    req.session.userDbId = createdUser._id
+ //    req.session.username = createdUser.username
+ //    req.session.message = ''
+ //    req.session.updated = ''
+
+ //    fs.unlink(filePath, (err) => {
+ //    	if(err) next(err);
+	// })
+
+ //    res.redirect('/users')
+  
+ //  } catch (err) {
+ //    next(err)
+ //  }
+	// 	}
 
 
 })
@@ -130,6 +191,10 @@ router.get('/logout', (req, res) => {
 
 router.get('/', async (req, res, next) => {
 	try {
+
+		// console.log("x");
+		// console.log(x);
+
 		const foundPets = await Pet.find({})
 		res.render('user/index.ejs', {
 			pets: foundPets,

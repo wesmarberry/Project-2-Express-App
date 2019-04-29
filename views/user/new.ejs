@@ -18,7 +18,8 @@
       <input type="text" name="phone" placeholder="phone">
       <input type="text" name="zipcode" placeholder="zipcode">
       <input type="file" name="photo">
-      <button type="submit">Register</button>
+      <button type="submit">Register</button><br>
+      <strong><%= typeof msg != 'undefined' ? msg : ''%></strong>
   </form>
 
 <%- include ../partials/footer.ejs %>

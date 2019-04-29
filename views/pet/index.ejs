@@ -1,12 +1,10 @@
 <%- include ../partials/header.ejs %>
 
-<h2>INDEX page</h2>
-
 <div class="indexDogPanel">
 	<%pets.forEach(pet=>{%>
 		<div class="dogInfo">
 			<div><a href="/pets/<%=pet._id%>"><%= pet.name%></a></div>
-			<div><img src="<%=pet.photo%>"></div>
+			<div><img src="/pets/<%=pet._id%>/photo"></div>
 			<div><%= pet.petKind%></div>
 			<div><%= pet.age%></div>
 			<div><%= pet.breed%></div>
