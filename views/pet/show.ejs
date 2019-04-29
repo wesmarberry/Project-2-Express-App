@@ -15,10 +15,10 @@
 		<%if (pet.owner === loggedInUser) {%>
 			<div><a class='owner-link' href="/users/<%=pet.owner%>">User Home Page</a></div>
 			<form action="/pets/<%=pet._id%>?_method=DELETE" method="POST">
-				<button>Remove Pet</button>
+				<button class='cool-propose-button'>Remove Pet</button>
 			</form>
 			<form action="/pets/<%=pet._id%>/edit" method="POST">
-				<button>Edit Pet Info</button>
+				<button class="cool-propose-button">Edit Pet Info</button>
 			</form>
 			<hr>
 		<%} else {%>

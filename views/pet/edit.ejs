@@ -1,17 +1,29 @@
 <%- include ../partials/header.ejs %>
 
-<h2>Update Pets Infor</h2>
 
-<form action="/pets/<%=pet._id%>?_method=PUT" method="post">
-	<ul class="updatePetForm">
-		<li>name:  	 <input type="text" name="name"    value="<%=pet.name%>"></input></li>
-		<li>petKind: <input type="text" name="petKind" value="<%=pet.petKind%>"></input></li>
-		<li>breed: 	 <input type="text" name="breed"   value="<%=pet.breed%>"></input></li>
-		<li>age:	 <input type="text" name="age"     value="<%=pet.age%>"></input></li>
-		<li>photo:	 <input type="text" name="photo"   value="<%=pet.photo%>"></input></li>
-	</ul>
-	<button>Update Puppy Dog</button>
-</form>
+
+<div class="new-pet-container">
+	<div class="new-inner-container">
+		
+
+
+		<h2 class='schedule-header' id='update-header'>Update <%=pet.name%>'s Info</h2>
+
+		<form action="/pets/<%=pet._id%>?_method=PUT" method="post">
+			<ul class="creatPetForm">
+				<li>Name:  	 <input class='new-input' type="text" name="name"    value="<%=pet.name%>"></input></li>
+				<li>Kind: <input class='new-input' type="text" name="petKind" value="<%=pet.petKind%>"></input></li>
+				<li>Breed: 	 <input class='new-input' type="text" name="breed"   value="<%=pet.breed%>"></input></li>
+				<li>Age:	 <input class='new-input' type="text" name="age"     value="<%=pet.age%>"></input></li>
+				<li>Photo:	 <input class='new-input' type="text" name="photo"   value="<%=pet.photo%>"></input></li>
+			</ul>
+			<button class="cool-propose-button" id='add-pet-button'>Update Pet</button>
+		</form>
+	</div>
+
+
+</div>
+
 
 
 <%- include ../partials/footer.ejs %>
