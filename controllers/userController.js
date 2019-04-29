@@ -5,36 +5,90 @@ const Pet = require('../models/pet');
 const Review = require('../models/review');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/'})
 const fs = require('fs');
+// const x = require('../public/js/app');
+
+//path is a core node.js module that provides utilities for working with file and directory paths
+// in our case we will use this module to catch the extension from the uploaded file
+//using the method path.extname().
+const path = require('path');
+
+// console.log(x);
+//setting storage engine
+const storageEngine = multer.diskStorage({
+	destination: './uploads/',
+	filename: (req,file,cb)=>{
+		cb(null,file.fieldname + "-" +Date.now() + path.extname(file.originalname))
+	}
+});
+
+//init upload
+const upload = multer({
+	storage: storageEngine,
+	limits: {fileSize: 1000000},
+	fileFilter:(req,file,cb)=>{
+	
+			// setting a expression of allowed extensions
+			const fileTypes = /jpeg|jpg|png|gif/;
+
+			const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
+
+			const mimeType = fileTypes.test(file.mimetype)
+
+			if (extName && mimeType){
+				return cb(null,true)
+			}
+			else{
+				console.log("ERRRRORRRRRR");
+				cb('Error: File is not a image')
+			}
+		
+	}
+})//.single('photo');
 
 
+
+let message;
 // login and register route
 router.get('/new', (req, res) => {
 	res.render('user/new.ejs', {
 		message: req.session.message,
 		logged: req.session.logged,
 		username: req.session.username,
-		id: req.session.userDbId
+		id: req.session.userDbId,
+		msg: message
 	})		
 })
 
 
 // route to register a new user
-router.post('/register', upload.single('photo'), async (req, res, next) => {
-  console.log(req.body);
-  console.log(req.file)
+router.post('/register', upload.single('photo'), async(req, res, next) => {
+
+	
+	console.log('req.body=======');
+	console.log(req.body);
+	console.log('req.file=======');
+	console.log(req.file);
+
+
+	
+
   // first we must hash the password
   const password = req.body.password;
   // the password has is what we want to put in the database
-  console.log('bcrypt=========before');
-  console.log(req.body);
   
   const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 
-  console.log('bcrypt=========after');
   // setting the filePath for the users photo
-  const filePath = './' + req.file.path
+  let filePath;
+  if (req.file){
+  	filePath = './' + req.file.path;
+  }
+  else{
+  	filePath = './public/images/no-profile-picture-icon.jpg';
+  	console.log(filePath);
+  }
+  console.log("====filename=====", filePath);
 
   // create and object for the db entry
   const userDbEntry = {};
@@ -49,28 +103,48 @@ router.post('/register', upload.single('photo'), async (req, res, next) => {
 
   try {
 
-    const createdUser = await User.create(userDbEntry)
-     createdUser.photo.data = fs.readFileSync(filePath);
-     createdUser.save()
+  // 		upload(req, res, (err)=>{
+		// 	if (err){
+		// 		console.log(err);
+		// 		message = err
+		// 		res.rendirect('/users/new')
+		// 	}
+		// 	else{
+		// 		console.log(req.file);
+		// 	}
+		// })
 
-    console.log('createdUser==================');
-    console.log(createdUser);
 
-    req.session.logged = true;
-    req.session.userDbId = createdUser._id
-    req.session.username = createdUser.username
-    req.session.message = ''
-    req.session.updated = ''
+	    const createdUser = await User.create(userDbEntry)
+	    
+	    createdUser.photo.data = fs.readFileSync(filePath);
+	    
+	    createdUser.save()
 
-    fs.unlink(filePath, (err) => {
-    	if(err) next(err);
-	})
+	    console.log('createdUser==================');
+	    console.log(createdUser);
 
-    res.redirect('/users')
+	    req.session.logged = true;
+	    req.session.userDbId = createdUser._id
+	    req.session.username = createdUser.username
+	    req.session.message = ''
+	    req.session.updated = ''
+
+	    if (filePath !== './public/images/no-profile-picture-icon.jpg'){
+		    fs.unlink(filePath, (err) => {
+		    	if(err) next(err);
+			})
+	    }
+
+	    res.redirect('/users')
   
   } catch (err) {
-    next(err)
+
+    	message = err
+    	console.log(message);
+		res.rendirect('/users/new')
   }
+		
 
 
 })
@@ -130,6 +204,10 @@ router.get('/logout', (req, res) => {
 
 router.get('/', async (req, res, next) => {
 	try {
+
+		// console.log("x");
+		// console.log(x);
+
 		const foundPets = await Pet.find({})
 		res.render('user/index.ejs', {
 			pets: foundPets,
@@ -207,12 +285,36 @@ router.get('/:id/edit', async (req, res, next) => {
 
 // update route
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', upload.single('photo'), async (req, res, next) => {
 	try {
+
+
+
+		console.log('======req.body==== : ',req.body);
+
+		let filePath;
+  		if (req.file){
+  			filePath = './' + req.file.path;
+  		    console.log("====filename=====", filePath);
+  		}
+  		
+
 		const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})
+
+
+		if (req.file){
+ 		    updatedUser.photo.data = fs.readFileSync(filePath);
+ 		    updatedUser.save();
+		    fs.unlink(filePath, (err) => {
+		    	if(err) next(err);
+			})
+	    }
+
+
 		req.session.updated = req.session.username + ' was updated!'
 		res.redirect('/users/' + req.params.id + '/edit')
 		req.session.updated = ''
+
 	} catch (err) {
 		next(err)
 	}	

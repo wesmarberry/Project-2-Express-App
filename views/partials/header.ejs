@@ -3,8 +3,18 @@
 <head>
   <title></title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
-  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  
   <link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet">
+
+<!-- google-signin-client_id meta element. -->
+  <meta name="google-signin-client_id" content="271919295013-phr6n1c5ljcedojcgj6deh1e2u1epagc.apps.googleusercontent.com">
+  
+  <!--Load the Google Platform Library -->
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 
 <body class="container-fluid">
@@ -12,10 +22,17 @@
 		<nav class="container-fluid nav">
 		  
 		  <div class="login-header">
-			  <a href="/users"><h1 class='page-header'> petFinder</h1></a>
+			  <h1 class='page-header'>Cuddle <br> Bugs Finder</h1>
+			  <li><a href="/users">Home</a></li>
+			  <li><a href="/pets">Pets</a></li>
+			  <li>About Us</li>
+
 			  <img src="http://pngimg.com/uploads/dog/dog_PNG136.png">
 			  <img src="http://pngimg.com/uploads/dog/dog_png2399.png">
 			  <img src="http://pngimg.com/uploads/dog/dog_PNG182.png">
+			  
+			  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+			  
 			  <%if (logged === undefined) {%>	
 				  <form action="/users/new" method="POST">
 				    <input type="text" name="username" placeholder="username">
@@ -28,6 +45,4 @@
 		          <a href="/users/logout">Log Out</a>
 			  <%}%>	
 		  </div>
-
-
 		</nav>

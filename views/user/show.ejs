@@ -20,7 +20,7 @@
                 <% for(let i = 0; i < user.pets.length; i++){ %>
                     <li>
                         <a href="/pets/<%=user.pets[i]._id%>">
-                            <img src="<%=user.pets[i].photo%>">
+                            <img src="/pets/<%=user.pets[i]._id%>/photo">
                         </a></br>
                     </li>
                 <% } %>
