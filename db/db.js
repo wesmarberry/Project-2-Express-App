@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const connectionString = 'mongodb://localhost/petDB1';
+const connectionString = process.env.MONGODB_URI;
 
 mongoose.connect(connectionString, {
   useNewUrlParser: true,
