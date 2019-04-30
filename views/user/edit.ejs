@@ -15,7 +15,7 @@
         <div class="user-pets-container">
             
 
-            <h1><%=user.username%>'s Pets</h1>
+            <h1 class='labels'><%=user.username%>'s Pets</h1>
             <ul class="pets-ul1">
                 <% for(let i = 0; i < user.pets.length; i++){ %>
                     <li class="pets-li">
@@ -32,7 +32,7 @@
         <div class="user-container">
             <div class="inner-container">
                 <div class="header-container">
-                    <h1><%=user.username%></h1>    
+                    <h1 class='labels'><%=user.username%></h1>    
 
                 </div>
                 <small><%=updated%></small>

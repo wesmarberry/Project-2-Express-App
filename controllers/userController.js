@@ -303,6 +303,24 @@ router.get('/:id/photo', async(req,res, next) => {
 	}
 })
 
+//about us route
+
+router.get('/goToStory', (req, res, next) => {
+	console.log('============== about route hit');
+	try {
+		res.render('user/about.ejs', {
+			logged: req.session.logged,
+			username: req.session.username,
+			id: req.session.userDbId,
+			API: process.env.API_KEY
+		})
+
+	} catch (err) {
+		next(err)
+	}
+
+})
+
 // show route
 router.get('/:id', async (req, res, next) => {
 	if (req.session.logged === false || req.session.logged === undefined) {
@@ -412,12 +430,17 @@ router.post('/review', async (req, res, next) => {
 		console.log(createdReview + ' is the created review');
 		const foundUser = await User.findById(req.body.userReviewed)
 		console.log(foundUser + ' is the found user');
-		foundUser.reviews.push(createdReview)
-		foundUser.save()
+		await foundUser.reviews.push(createdReview)
+		await foundUser.save()
 		res.redirect('/users/' + foundUser._id)
 	} catch (err) {
 		next(err)
 	}
 })
+
+
+
+
+
 
 module.exports = router

@@ -8,37 +8,47 @@ body{
 	justify-content: space-around;
 */	color: black;
 	margin-top: 150px;
-	margin-bottom: 150px;
+/*	margin-bottom: 150px;*/
 	font-family: 'Playfair Display', serif;
-
-
-}
-
-.note {
-	color: red;
-	font-weight: bold;
-}
-
-.background::after{
-	content: '';
-	background-image: url('http://behbg.com/wp-content/uploads/2015/06/InMenloSpottedDogPark04.22.13-3773.jpg');
+	background-image: url('https://i.imgur.com/kXn6ELo.jpg');
 	background-size: cover;
+	background-attachment: fixed;
 	top: 0;
   	left: 0;
   	bottom: 0;
   	right: 0;
   	position: absolute;
   	z-index: -1;
-  	opacity: 0.5;
+
 }
 
-.background {
+
+
+.note {
+	color: red;
+	font-weight: bold;
+}
+
+
+
+/*.background {
   width: 100%;
   height: 100%;
-  /*display: block;*/
-
+  background-image: url('http://behbg.com/wp-content/uploads/2015/06/InMenloSpottedDogPark04.22.13-3773.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+	
 }
 
+.background::after {
+	z-index: -1;
+	opacity: 0.5;
+}*/
+  /*overflow: auto;
+  /*display: block;*/
+
+/*}*/
+/*
 div::after {
   content: "";
   background: url(image.jpg);
@@ -49,7 +59,7 @@ div::after {
   right: 0;
   position: absolute;
   z-index: -1;   
-}
+}*/
 
 /*nav{
 	margin-top:10px;
@@ -107,6 +117,7 @@ footer{
 	padding-left: 10px;
 	padding-bottom: 5px;
 	z-index: 100;
+	padding-right: 20px;
 }
 
 .login-header {
@@ -123,6 +134,7 @@ footer{
 	display: flex;
 	justify-content: space-around;
 	flex-wrap: wrap;
+/*	clear: right;*/
 }
 
 .pet-img {
@@ -130,6 +142,7 @@ footer{
 	border-radius: 10px;
 	height: 150px;
 	max-width: 150px;
+
 }
 
 .cool-button {
@@ -149,7 +162,7 @@ footer{
 }
 
 .cool-button:hover {
-	border: 5px solid #FFFFFF;
+	border: 3px solid #FFFFFF;
 	transition: background 0.25s linear;
 	-webkit-transition: background 0.25s linear;
 }
@@ -183,11 +196,38 @@ footer{
 .index-container {
 	display: flex;
 	justify-content: space-around;
+
+	/*padding-top: 150px;*/
+/*	margin-top: -20px;*/
+}
+
+#index-button {
+	margin-top: -5px;
+}
+
+#google-button {
+	height: auto;
+
 }
 
 .schedule-panel {
 	width: 300px;
 	height: 300px;
+	background-color: #00303F;
+	color: #DCAE1D;
+	border-radius: 10px;
+	box-shadow: 5px 5px black;
+	overflow: auto;
+}
+
+.about-container {
+	display: flex;
+	justify-content: center;
+}
+
+.about-panel {
+	width: 600px;
+	height: 400px;
 	background-color: #00303F;
 	color: #DCAE1D;
 	border-radius: 10px;
@@ -343,7 +383,7 @@ footer{
 }
 
 .rating {
-	font-size: 15px;
+	font-size: 20px;
 }
 
 .user-container {
@@ -352,9 +392,23 @@ footer{
 	
 }
 
+.footer-img {
+	height: 20px;
+	display: inline;
+	border-radius: 50px;
+}
+
+.footer-img:hover {
+	background-color: blue;
+}
+
 .user-photo {
 	border-radius: 50px;
 	text-align: center;
+}
+
+#login-button {
+	margin-left: 2px;
 }
 
 .inner-container {
@@ -363,13 +417,28 @@ footer{
 	align-items: center;
 }
 
+.footer {
+	background-color: #00303F;
+	color: white;
+	text-align: center;
+	height: 28px;
 
+}
+
+.pets-li {
+	margin-bottom: 10px;
+}
 
 .pet-img1 {
 	border: black 4px solid;
 	border-radius: 10px;
 	height: 100px;
 	max-width: 100px;
+}
+
+.labels {
+	text-decoration: underline;
+	font-weight: bold;
 }
 
 .pets-ul1 {
@@ -407,6 +476,10 @@ footer{
    height: 400px;
    background-color: grey;
    border-radius: 10px;
+   float: right;
+   margin-left: 10px;
+   margin-right: 10px;
+/*   display: block;*/
  }
 
 #map1 {
