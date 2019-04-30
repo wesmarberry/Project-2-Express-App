@@ -5,11 +5,6 @@ const queryString = require('query-string');
 const User   = require('../models/user');
 const fs = require('fs');
 
-// client ID
-// 271919295013-phr6n1c5ljcedojcgj6deh1e2u1epagc.apps.googleusercontent.com
-
-// client secret
-// oUfUSqvakAGW6lK2mDWXBKGI
 
 const googleConfig = {
   clientId: process.env.CLIENT_ID,
