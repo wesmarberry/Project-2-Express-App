@@ -9,6 +9,8 @@ const userSchema = new mongoose.Schema({
   email: String,
   phone: String,
   zipcode: Number,
+  lat: Number,
+  lng: Number,
   photo:{ 
     data: Buffer,
     contentType: String },

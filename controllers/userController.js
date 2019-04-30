@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express');
 const router = express.Router();
 const User   = require('../models/user');
@@ -6,6 +8,7 @@ const Review = require('../models/review');
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const fs = require('fs');
+const App = require('../public/js/app.js')
 // const x = require('../public/js/app');
 
 //path is a core node.js module that provides utilities for working with file and directory paths
@@ -46,7 +49,7 @@ const upload = multer({
 	}
 })//.single('photo');
 
-
+console.log(App);
 
 let message;
 // login and register route
@@ -56,9 +59,70 @@ router.get('/new', (req, res) => {
 		logged: req.session.logged,
 		username: req.session.username,
 		id: req.session.userDbId,
-		msg: message
+		msg: message,
+		API: process.env.API_KEY
 	})		
 })
+
+
+// geocode fucnction
+
+
+// const latLongFinder = (zipcode) => {
+	// const lat = '';
+ //    const lng = '';
+ //    const address = zipcode;
+	// var platform = new H.service.Platform({
+	//   'app_id': '{9Jfnwd59kOCF5Ej3Gf5C}',
+	//   'app_code': '{1lglqwoyeqDmQ_kweOKABw}'
+	// });
+
+ //    geocoder.geocode( { 'address': address}, function(results, status) {
+ //      if (status == google.maps.GeocoderStatus.OK) {
+ //         lat = results[0].geometry.location.lat();
+ //         lng = results[0].geometry.location.lng();
+ //        } else {
+ //        console.log("Geocode was not successful for the following reason: " + status);
+ //      }
+ //    });
+	// console.log(lat + 'is the latitiude');
+	// console.log(lng + 'is the latitiude');
+
+
+// 	var Ireland = "Dublin";
+
+// function initialize() 
+// {
+//   geocoder = new google.maps.Geocoder();
+//   var latlng = new google.maps.LatLng(53.3496, -6.3263);
+//   var mapOptions = 
+//   {
+//     zoom: 8,
+//     center: latlng
+//   }
+//   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+//   codeAddress(Ireland);//call the function
+// }
+
+// function codeAddress(zipcode) 
+// {
+//   geocoder.geocode( {address:address}, function(results, status) 
+//   {
+//     if (status == google.maps.GeocoderStatus.OK) 
+//     {
+//       map.setCenter(results[0].geometry.location);//center the map over the result
+//       //place a marker at the location
+//       var marker = new google.maps.Marker(
+//       {
+//           map: map,
+//           position: results[0].geometry.location
+//       });
+//     } else {
+//       alert('Geocode was not successful for the following reason: ' + status);
+//    }
+//   });
+// }
+// }
 
 
 // route to register a new user
@@ -90,6 +154,7 @@ router.post('/register', upload.single('photo'), async(req, res, next) => {
   }
   console.log("====filename=====", filePath);
 
+
   // create and object for the db entry
   const userDbEntry = {};
   userDbEntry.username = req.body.username;
@@ -98,6 +163,9 @@ router.post('/register', upload.single('photo'), async(req, res, next) => {
   userDbEntry.email = req.body.email;
   userDbEntry.phone = req.body.phone;
   userDbEntry.zipcode = req.body.zipcode;
+  userDbEntry.lat = req.body.lat
+  userDbEntry.lng = req.body.lng
+
   // userDbEntry.photo = req.body.photo;
   
 
@@ -129,13 +197,16 @@ router.post('/register', upload.single('photo'), async(req, res, next) => {
 	    req.session.username = createdUser.username
 	    req.session.message = ''
 	    req.session.updated = ''
+	    req.session.lat = createdUser.lat
+	    req.session.lng = createdUser.lng
+	    // req.session.latLng = latLongFinder(createdUser.zipcode)
 
 	    if (filePath !== './public/images/no-profile-picture-icon.jpg'){
 		    fs.unlink(filePath, (err) => {
 		    	if(err) next(err);
 			})
 	    }
-
+	    console.log(createdUser + ' ============== is the created user');
 	    res.redirect('/users')
   
   } catch (err) {
@@ -164,6 +235,10 @@ router.post('/new', async (req, res, next) => {
         req.session.username = req.body.username
         req.session.message = ''
         req.session.updated = ''
+        req.session.lat = userExists.lat
+	    req.session.lng = userExists.lng
+        // req.session.latLng = latLongFinder(userExists.zipcode)
+        console.log(req.session.latLng);
         res.redirect('/users')
         
       } else {
@@ -200,20 +275,34 @@ router.get('/logout', (req, res) => {
 })
 
 
+
+
+
+
+
+
+
+
 //index route
 
 router.get('/', async (req, res, next) => {
 	try {
-
+		console.log(req.session.lat + ' ========= is user Lat');
+		console.log(req.session.lng + ' =========== is user lng');
 		// console.log("x");
 		// console.log(x);
-
+		console.log(process.env.API_KEY);
+		console.log(process.env.SOURCE_EMAIL)
 		const foundPets = await Pet.find({})
 		res.render('user/index.ejs', {
 			pets: foundPets,
 			logged: req.session.logged,
 			username: req.session.username,
-			id: req.session.userDbId
+			id: req.session.userDbId,
+			API: process.env.API_KEY,
+			userLat: req.session.lat,
+			userLng: req.session.lng,
+			i: 0
 		})
 	} catch (err) {
 		next(err)
@@ -256,7 +345,8 @@ router.get('/:id', async (req, res, next) => {
 				logged: req.session.logged,
 				id: req.session.userDbId,
 				username: req.session.username,
-				updated: req.session.updated
+				updated: req.session.updated,
+				API: process.env.API_KEY
 			})
 		} catch (err) {
 			next(err)
@@ -283,7 +373,8 @@ router.get('/:id/edit', async (req, res, next) => {
 			logged: req.session.logged,
 			id: req.session.userDbId,
 			username: req.session.username,
-			updated: req.session.updatedMsg
+			updated: req.session.updatedMsg,
+			API: process.env.API_KEY
 		})
 	} catch (err) {
 		next(err)

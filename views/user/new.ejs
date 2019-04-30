@@ -1,5 +1,9 @@
 <%- include ../partials/header.ejs %>
 
+
+
+  <
+
   <h1>Login</h1>
   <form action="/users/new" method="POST">
     <input type="text" name="username" placeholder="username">
@@ -18,6 +22,8 @@
       <input type="text" name="phone" placeholder="phone">
       <input type="text" name="zipcode" placeholder="zipcode">
       <input type="file" name="photo">
+      <input id='lat' type="hidden" name="lat">
+      <input id='lng' type="hidden" name="lng">
       <button type="submit">Register</button><br>
 
       <strong><%= typeof msg != 'undefined' ? msg : ''%></strong>
@@ -28,4 +34,16 @@
         <div id="my-signin2"></div>
   </form>
 
+  <script type="text/javascript">
+    navigator.geolocation.getCurrentPosition((data) => {
+      const latLong = data
+      $('#lat').val(latLong.coords.latitude)
+      $('#lng').val(latLong.coords.longitude)
+      // console.log(latLong.coords.latitude);
+      return latLong
+
+    })
+
+  </script>
+  
 <%- include ../partials/footer.ejs %>

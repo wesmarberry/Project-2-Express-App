@@ -5,6 +5,8 @@ const petSchema = new mongoose.Schema({
 	name: {type: String, required: true},
 	breed: {type: String, required: true},
 	age: String,
+	lat: Number,
+	lng: Number,
 	schedule:[{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Schedule'

@@ -7,7 +7,9 @@
 
 		<form action="/pets" method="POST" enctype="multipart/form-data">
 			<ul class="creatPetForm">
-				<input type="hidden" name="owner" value="<%=user%>"></input>
+				<input type="hidden" name="owner" value="<%=user._id%>"></input>
+				<input type="hidden" name="lat" value="<%=user.lat%>">
+				<input type="hidden" name="lng" value="<%=user.lng%>">
 				<li>Name:  	 <input class='new-input' type="text" name="name"    placeholder="e.g. Jax"></input></li>
 				<li>Kind: <input class='new-input' type="text" name="petKind" placeholder="e.g. Dog"></input></li>
 				<li>Breed: 	 <input class='new-input' type="text" name="breed" placeholder="e.g. Border Collie"></input></li>
@@ -18,6 +20,7 @@
 			</ul>
 			<button class="cool-propose-button" id='add-pet-button'>Add Your Pet</button>
 		</form>
+
 	</div>
 </div>
 <%- include ../partials/footer.ejs %>

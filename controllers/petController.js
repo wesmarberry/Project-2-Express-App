@@ -21,8 +21,8 @@ const mailer = async (senderEmail, senderUsername, receiverEmail, subject, messa
 	let transporter = nodemailer.createTransport({
 	host: 'smtp.gmail.com',
 	auth: {
-		user: "pupfinder12345@gmail.com",
-		pass: "?pup12345"
+		user: process.env.SOURCE_EMAIL,
+		pass: process.env.SOURCE_PASSWORD
 	},
 	})
 
@@ -48,14 +48,19 @@ router.get('/', async(req,res)=>{
 	  }
 });
 
-router.get('/new', (req,res)=>{
-
-	res.render('pet/new.ejs',{
-		user: req.session.userDbId,
-		logged: req.session.logged,
-		username: req.session.username,
-		id: req.session.userDbId
-	})
+router.get('/new', async (req,res,next)=>{
+	try {
+		const foundUser = await User.findById(req.session.userDbId)
+		res.render('pet/new.ejs',{
+			user: foundUser,
+			logged: req.session.logged,
+			username: req.session.username,
+			id: req.session.userDbId,
+			API: process.env.API_KEY
+		})
+	} catch (err) {
+		next(err)
+	}
 })
 
 router.delete('/:id', async(req,res)=>{
@@ -101,7 +106,8 @@ router.get('/:id', async(req,res)=>{
 				loggedInUsername: req.session.username,
 				logged: req.session.logged,
 				username: req.session.username,
-				id: req.session.userDbId
+				id: req.session.userDbId,
+				API: process.env.API_KEY
 			})  				
 	  }
 	  catch(err){
@@ -116,7 +122,8 @@ router.post('/:id/edit', async(req,res)=>{
 				pet: petToUpdate,
 				logged: req.session.logged,
 				username: req.session.username,
-				id: req.session.userDbId
+				id: req.session.userDbId,
+				API: process.env.API_KEY
 			})  				
 	  }
 	  catch(err){
@@ -148,6 +155,8 @@ router.post('/', upload.single('photo'), async(req,res,next)=>{
 			newPet.age = req.body.age
 			newPet.petKind = req.body.petKind
 			newPet.owner = req.body.owner
+			newPet.lat = req.body.lat
+			newPet.lng = req.body.lng
 			newPet.photo.data = fs.readFileSync(filePath)
 
 			await newPet.save();
