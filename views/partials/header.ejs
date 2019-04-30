@@ -26,22 +26,23 @@
 		  <div class="login-header">
 			  <h1 class='page-header'>petFinder</h1>
 			  <li><a href="/users">Home</a></li>
-			  <li>About Us</li>
+			  <li><a href="/users/goToStory">About</a></li>
 
 			  <img src="http://pngimg.com/uploads/dog/dog_PNG136.png">
 			  <img src="http://pngimg.com/uploads/dog/dog_png2399.png">
 			  <img src="http://pngimg.com/uploads/dog/dog_PNG182.png">
 			  
-			  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+			  
 			  
 			  <%if (logged === undefined) {%>	
-				  <form action="/users/new" method="POST">
+				  <form class='login-panel' action="/users/new" method="POST">
 				    <input type="text" name="username" placeholder="username">
 				    <a href="/users/new">Register</a><br>
 				    <input type="password" name="password" placeholder="password">
-				    <button type="submit">Login</button>
+				    <button class='cool-button' id='login-button' type="submit">Login</button>
 				  </form>
 			  <%} else {%>
+
 			  	  <a href="/users/<%=id%>/edit"><%=username%></a>
 		          <a href="/users/logout">Log Out</a>
 			  <%}%>	
