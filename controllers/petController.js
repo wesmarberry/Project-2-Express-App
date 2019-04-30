@@ -163,7 +163,14 @@ router.put('/:id', upload.single('photo'),async(req,res)=>{
 router.post('/', upload.single('photo'), async(req,res,next)=>{
 	  try{
 
-		  	const filePath = './' + req.file.path
+		  	// setting the filePath for the users photo
+  			let filePath;
+			if (req.file){
+				filePath = './' + req.file.path;
+			}
+			else{
+			  	filePath = './public/images/no-image.gif';
+			}
 			
 			const newPet = new Pet
 			newPet.name = req.body.name
@@ -182,9 +189,16 @@ router.post('/', upload.single('photo'), async(req,res,next)=>{
 			foundUser.pets.push(newPet._id)
 			foundUser.save()
 
-			await fs.unlink(filePath, (err) => {
-				if(err) next(err);
-			})
+			
+
+			
+
+			if (filePath !== './public/images/no-image.gif'){
+		    	fs.unlink(filePath, (err) => {
+		    		if(err) next(err);
+			});
+		}
+
 
 			res.redirect(`pets/${newPet._id}`)
 	  }
