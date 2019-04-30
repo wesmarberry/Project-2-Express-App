@@ -1,16 +1,16 @@
 <%- include ../partials/header.ejs %>
-        <div class='rating-container'>
-            <%let sum = 0%>    
-                <%for (let i = 0; i < user.reviews.length; i++) {%>
-                    <%sum += Number(user.reviews[i].rating) %>
-                <%}%>
-                <%const overallRating = (sum/user.reviews.length).toFixed(1)%>
-                <%if (overallRating === 'NaN') {%>
-                    <h2 class='rating'>Rating: No Rating</h2>
-                <%} else {%> 
-                    <h2>Rating: <%=overallRating%></h2>
-                <%}%>    
-        </div>        
+<div class='rating-container'>
+    <%let sum = 0%>    
+        <%for (let i = 0; i < user.reviews.length; i++) {%>
+            <%sum += Number(user.reviews[i].rating) %>
+        <%}%>
+        <%const overallRating = (sum/user.reviews.length).toFixed(1)%>
+        <%if (overallRating === 'NaN') {%>
+            <h2 class='rating'>Rating: No Rating</h2>
+        <%} else {%> 
+            <h2 class='rating'>Rating: <%=overallRating%></h2>
+        <%}%>    
+</div>      
     <div class="overall-container">  
         <div class="user-pets-container">
             

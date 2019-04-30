@@ -11,6 +11,7 @@ const nodemailer	 = require('nodemailer')
 
 require('./db/db')
 
+
 const petController = require('./controllers/petController')
 const userController = require('./controllers/userController')
 const authController = require('./controllers/authController')
@@ -32,7 +33,9 @@ app.use('/pets', petController);
 app.use('/users', userController);
 app.use('/auth', authController);
 
+const PORT = process.env.PORT
 
-app.listen(3000, () => {
-  console.log('listening... on port: ', 3000);
+
+app.listen(PORT, () => {
+  console.log('Mongoose Connected');
 });
