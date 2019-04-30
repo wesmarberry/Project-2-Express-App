@@ -16,42 +16,42 @@ const App = require('../public/js/app.js')
 //using the method path.extname().
 const path = require('path');
 
-// console.log(x);
 //setting storage engine
 const storageEngine = multer.diskStorage({
 	destination: './uploads/',
-	filename: (req,file,cb)=>{
-		cb(null,file.fieldname + "-" +Date.now() + path.extname(file.originalname))
+	filename: (req,file,callback)=>{
+		callback(null,file.fieldname + "-" +Date.now() + path.extname(file.originalname))
 	}
 });
 
 //init upload
 const upload = multer({
 	storage: storageEngine,
-	limits: {fileSize: 1000000},
-	fileFilter:(req,file,cb)=>{
-	
-			// setting a expression of allowed extensions
-			const fileTypes = /jpeg|jpg|png|gif/;
-
-			const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
-
-			const mimeType = fileTypes.test(file.mimetype)
-
-			if (extName && mimeType){
-				return cb(null,true)
-			}
-			else{
-				console.log("ERRRRORRRRRR");
-				cb('Error: File is not a image')
-			}
-		
+	limits: {fileSize: 5000000},
+	fileFilter:(req,file,callback)=>{
+		checkFileType(file,callback)
 	}
 })//.single('photo');
 
-console.log(App);
 
-let message;
+const checkFileType = (file,callback) =>{
+	// setting a expression of allowed extensions
+	const fileTypes = /jpeg|jpg|png|gif/;
+
+	const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
+
+	const mimeType = fileTypes.test(file.mimetype)
+
+	if (extName && mimeType){
+		return callback(null,true)
+	}
+	else{
+		console.log("ERRRRORRRRRR");
+		callback('Error: File is not a image')
+	}
+}
+
+let message
 // login and register route
 router.get('/new', (req, res) => {
 	res.render('user/new.ejs', {
@@ -128,20 +128,11 @@ router.get('/new', (req, res) => {
 // route to register a new user
 router.post('/register', upload.single('photo'), async(req, res, next) => {
 
-	
-	console.log('req.body=======');
-	console.log(req.body);
-	console.log('req.file=======');
-	console.log(req.file);
-
-
-	
-
-  // first we must hash the password
-  const password = req.body.password;
-  // the password has is what we want to put in the database
+	// first we must hash the password
+  	const password = req.body.password;
+  	// the password has is what we want to put in the database
   
-  const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+  	const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 
   // setting the filePath for the users photo
   let filePath;
@@ -185,12 +176,9 @@ router.post('/register', upload.single('photo'), async(req, res, next) => {
 
 	    const createdUser = await User.create(userDbEntry)
 	    
-	    createdUser.photo.data = fs.readFileSync(filePath);
-	    
-	    createdUser.save()
 
-	    console.log('createdUser==================');
-	    console.log(createdUser);
+	    createdUser.photo.data = fs.readFileSync(filePath);
+	    createdUser.save()
 
 	    req.session.logged = true;
 	    req.session.userDbId = createdUser._id
@@ -204,20 +192,15 @@ router.post('/register', upload.single('photo'), async(req, res, next) => {
 	    if (filePath !== './public/images/no-profile-picture-icon.jpg'){
 		    fs.unlink(filePath, (err) => {
 		    	if(err) next(err);
-			})
-	    }
-	    console.log(createdUser + ' ============== is the created user');
+			});
+		}
+
 	    res.redirect('/users')
-  
-  } catch (err) {
-
-    	message = err
-    	console.log(message);
-		res.rendirect('/users/new')
-  }
-		
-
-
+	  
+	}
+	catch (err) {
+	    next(err)
+	}
 })
 
 
@@ -227,7 +210,8 @@ router.post('/new', async (req, res, next) => {
   try {
     const userExists = await User.findOne({'username': req.body.username})
     console.log(userExists);
-    if (userExists) {
+    console.log(userExists.password);
+    if (userExists && userExists.password) {
       if (bcrypt.compareSync(req.body.password, userExists.password)) {
 
         req.session.userDbId = userExists._id
@@ -247,16 +231,12 @@ router.post('/new', async (req, res, next) => {
 
       }
     } else {
-      console.log("here");
       req.session.message = "username or password does not exist"
       res.redirect('/users/new')
     }
     
-
-
   } catch (err) {
 
-    console.log("catch");
     next(err)
   }
 
@@ -314,15 +294,9 @@ router.get('/', async (req, res, next) => {
 router.get('/:id/photo', async(req,res, next) => {
 	
 	try{
-
-	  	console.log('===== hit the photo route ========');
-
-	  	
-	  		const foundUser = await User.findById(req.params.id);
-			console.log('foundUser');
-			console.log(foundUser);
-			res.set('Content-Type', foundUser.photo.contentType)		
-			res.send(foundUser.photo.data)
+  		const foundUser = await User.findById(req.params.id);
+		res.set('Content-Type', foundUser.photo.contentType)		
+		res.send(foundUser.photo.data)
 	}
 	catch(err){
 	 	next(err)
@@ -330,7 +304,6 @@ router.get('/:id/photo', async(req,res, next) => {
 })
 
 // show route
-
 router.get('/:id', async (req, res, next) => {
 	if (req.session.logged === false || req.session.logged === undefined) {
 		res.redirect('/users/new')
@@ -382,23 +355,16 @@ router.get('/:id/edit', async (req, res, next) => {
 })
 
 // update route
-
 router.put('/:id', upload.single('photo'), async (req, res, next) => {
 	try {
 
 
-
-		console.log('======req.body==== : ',req.body);
-
 		let filePath;
   		if (req.file){
   			filePath = './' + req.file.path;
-  		    console.log("====filename=====", filePath);
   		}
   		
-
 		const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})
-
 
 		if (req.file){
  		    updatedUser.photo.data = fs.readFileSync(filePath);
@@ -410,6 +376,7 @@ router.put('/:id', upload.single('photo'), async (req, res, next) => {
 
 	    req.session.updated = true
 		console.log(req.session.updated);
+
 		res.redirect('/users/' + req.params.id + '/edit')
 		console.log(req.session.updated);
 
@@ -428,7 +395,6 @@ router.delete('/:id', async (req, res, next) => {
 	          $in: foundUser.pets 
 	        }
 		})
-		req.session.destroy()
 		res.redirect('/users')
 	} catch (err) {
 		next(err)
@@ -452,8 +418,5 @@ router.post('/review', async (req, res, next) => {
 		next(err)
 	}
 })
-
-
-
 
 module.exports = router

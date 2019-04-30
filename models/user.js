@@ -4,7 +4,7 @@ const Review = require('./review')
 
 const userSchema = new mongoose.Schema({
   username: {type: String, required: true, unique: true},
-  password: {type: String, required: true},
+  password: {type: String},
   name: String,
   email: String,
   phone: String,
@@ -26,3 +26,9 @@ const userSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('User', userSchema);
+
+
+
+
+// make the e-mail require and unique
+// use the e-mail as a username
