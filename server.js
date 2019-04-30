@@ -36,6 +36,10 @@ app.use('/auth', authController);
 const PORT = process.env.PORT
 
 
+app.get('/', (req, res) => {
+	res.redirect('/users')		
+})
+
 app.listen(PORT, () => {
   console.log('Mongoose Connected');
 });
