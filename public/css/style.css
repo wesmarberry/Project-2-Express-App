@@ -205,6 +205,11 @@ footer{
 	margin-top: -5px;
 }
 
+#google-button {
+	height: auto;
+
+}
+
 .schedule-panel {
 	width: 300px;
 	height: 300px;

@@ -430,8 +430,8 @@ router.post('/review', async (req, res, next) => {
 		console.log(createdReview + ' is the created review');
 		const foundUser = await User.findById(req.body.userReviewed)
 		console.log(foundUser + ' is the found user');
-		foundUser.reviews.push(createdReview)
-		foundUser.save()
+		await foundUser.reviews.push(createdReview)
+		await foundUser.save()
 		res.redirect('/users/' + foundUser._id)
 	} catch (err) {
 		next(err)
