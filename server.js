@@ -1,7 +1,6 @@
 require('dotenv').config();
 
 // process.env available; can add key value pairs in the .env file
-
 const express        = require('express');
 const app            = express();
 const bodyParser     = require('body-parser');
@@ -35,7 +34,7 @@ app.use('/auth', authController);
 
 const PORT = process.env.PORT
 
-
 app.listen(PORT, () => {
   console.log('Mongoose Connected');
+
 });

@@ -133,9 +133,24 @@ router.post('/:id/edit', async(req,res)=>{
 })
 
 
-router.put('/:id', async(req,res)=>{
+router.put('/:id', upload.single('photo'),async(req,res)=>{
 	  try{
+
+
+	  		let filePath;
+  			if (req.file){
+  				filePath = './' + req.file.path;
+  			}
+
 			const petToUpdated = await Pet.findByIdAndUpdate(req.params.id, req.body);
+
+			if (req.file){
+ 		    	petToUpdated.photo.data = fs.readFileSync(filePath);
+ 		    	petToUpdated.save();
+		    	fs.unlink(filePath, (err) => {
+		    		if(err) next(err);
+				})
+	    	}
 
 			res.redirect('/users'); 				
 	  }
