@@ -14,6 +14,11 @@ body{
 
 }
 
+.note {
+	color: red;
+	font-weight: bold;
+}
+
 .background::after{
 	content: '';
 	background-image: url('http://behbg.com/wp-content/uploads/2015/06/InMenloSpottedDogPark04.22.13-3773.jpg');
@@ -403,6 +408,12 @@ footer{
    border-radius: 10px;
  }
 
+#map1 {
+   width: 300px;
+   height: 300px;
+   background-color: grey;
+   border-radius: 10px;
+ }
 
 @media (max-width: 800px) {
 	.overall-container {
