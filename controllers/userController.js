@@ -395,6 +395,7 @@ router.delete('/:id', async (req, res, next) => {
 	          $in: foundUser.pets 
 	        }
 		})
+		req.session.destroy()
 		res.redirect('/users')
 	} catch (err) {
 		next(err)
