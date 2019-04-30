@@ -76,12 +76,14 @@ const getGoogleAccountFromCode = async(code)=> {
   const me = await plus.people.get({ userId: 'me' });
   
   // get the google id and email
-  const userGoogleId = me.data;
+  const userGoogleName = me.data.displayName;
+  const userGoogleImg = me.data.image.url;
   const userGoogleEmail = me.data.emails && me.data.emails.length && me.data.emails[0].value;
 
   // return so we can login or sign up the user
   return {
-    id: userGoogleId,
+    name: userGoogleName,
+    img: userGoogleImg,
     email: userGoogleEmail,
     tokens: tokens, // you can save these to the user if you ever want to get their details without making them log in again
   };

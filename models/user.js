@@ -4,7 +4,7 @@ const Review = require('./review')
 
 const userSchema = new mongoose.Schema({
   username: {type: String, required: true, unique: true},
-  password: {type: String, required: true},
+  password: {type: String},
   name: String,
   email: String,
   phone: String,

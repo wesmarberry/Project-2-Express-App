@@ -170,7 +170,6 @@ router.post('/new', async (req, res, next) => {
 
       }
     } else {
-      console.log("here");
       req.session.message = "username or password does not exist"
       res.redirect('/users/new')
     }
@@ -179,7 +178,6 @@ router.post('/new', async (req, res, next) => {
 
   } catch (err) {
 
-    console.log("catch");
     next(err)
   }
 
