@@ -201,6 +201,10 @@ footer{
 /*	margin-top: -20px;*/
 }
 
+#index-button {
+	margin-top: -5px;
+}
+
 .schedule-panel {
 	width: 300px;
 	height: 300px;
