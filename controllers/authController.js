@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const {google} = require('googleapis');
 const queryString = require('query-string');
+const User   = require('../models/user');
+const fs = require('fs');
+
 // client ID
 // 271919295013-phr6n1c5ljcedojcgj6deh1e2u1epagc.apps.googleusercontent.com
 
@@ -76,12 +79,15 @@ const getGoogleAccountFromCode = async(code)=> {
   const me = await plus.people.get({ userId: 'me' });
   
   // get the google id and email
+  // const userGoogleData = me.data;
+  const userGooglegivenName = me.data.name.givenName;
   const userGoogleName = me.data.displayName;
   const userGoogleImg = me.data.image.url;
   const userGoogleEmail = me.data.emails && me.data.emails.length && me.data.emails[0].value;
-
+  // console.log(userGooglegivenName);
   // return so we can login or sign up the user
   return {
+  	givenName: userGooglegivenName,
     name: userGoogleName,
     img: userGoogleImg,
     email: userGoogleEmail,
@@ -97,21 +103,78 @@ const getGoogleAccountFromCode = async(code)=> {
 router.get('/login', async(req, res, next) => {
 	try {
 		
-
-		console.log(req.query)
 		// res.query is how express get the params passed into the url
 		// in this case we are receiving two params sended to from googles serve.
 		// 1 -> code
 		// 2 -> scope
-		// we will get the code and call google api to get the users info
-		const userInfo = await getGoogleAccountFromCode(req.query.code)
-
-		res.send(userInfo);
+		// we will get the code (req.query.code) and call google api to get the users info
 		
-	} catch (err) {
+		const code = req.query.code;
+		const userInfo = await getGoogleAccountFromCode(code)
+	
+		// look for the user in the date base using email provided by the google API.
+
+		const userFound = await User.findOne({email:userInfo.email})
+
+		// console.log("userFound");
+		// console.log(userFound);
+
+		// if user exist, complete the logging and redirect to /users page.
+		if (userFound){
+
+			req.session.userDbId = userFound._id
+        	req.session.logged = true
+        	req.session.username = userFound.username
+        	req.session.message = ''
+        	req.session.updated = ''
+        	res.redirect('/users')
+		}
+		else{
+			// if user don't exist, register a new user and redirect to /users page.
+			console.log("user don't exist");
+
+
+			let filePath;
+			// if (req.file){
+			//   	filePath = './' + req.file.path;
+			// }
+			// else{
+			  	filePath = './public/images/no-profile-picture-icon.jpg';
+			// }
+			// create and object for the db entry
+			const userDbEntry = {};
+			userDbEntry.username = userInfo.givenName;
+			// userDbEntry.password = passwordHash;
+			userDbEntry.name = userInfo.name;
+			userDbEntry.email = userInfo.email;
+			// userDbEntry.phone = req.body.phone;
+			// userDbEntry.zipcode = req.body.zipcode;
+			// userDbEntry.photo = req.body.photo;
+	  
+		 	const createdUser = await User.create(userDbEntry)
+		    createdUser.photo.data = fs.readFileSync(filePath);
+		    createdUser.save()
+
+		    req.session.logged = true;
+		    req.session.userDbId = createdUser._id
+		    req.session.username = createdUser.username
+		    req.session.message = ''
+		    req.session.updated = ''
+
+		    if (filePath !== './public/images/no-profile-picture-icon.jpg'){
+			    fs.unlink(filePath, (err) => {
+			    	if(err) next(err);
+				});
+			}
+
+		    res.redirect('/users')
+			}
+		
+	}
+	catch (err) {
 		next(err)
 	}				
-})
+});
 
 
 

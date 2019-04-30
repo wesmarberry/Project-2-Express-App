@@ -24,3 +24,9 @@ const userSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('User', userSchema);
+
+
+
+
+// make the e-mail require and unique
+// use the e-mail as a username

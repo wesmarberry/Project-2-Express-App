@@ -38,11 +38,11 @@
         <div class="user-info">
             <img src="/users/<%=user._id%>/photo">
               <form action="/users/<%=user._id%>?_method=PUT" method="POST" enctype="multipart/form-data">
-                <input type="text" name="username" value="<%=user.username%>">
-                <input type="text" name="name" value="<%=user.name%>">
-                <input type="email" name="email" value="<%=user.email%>">
-                <input type="text" name="phone" value="<%=user.phone%>">
-                <input type="text" name="zipcode" value="<%=user.zipcode%>">
+                <input type="text" placeholder="Username" name="username" value="<%=user.username%>">
+                <input type="text" placeholder="Name" name="name" value="<%=user.name%>">
+                <input type="email" placeholder="e-mail" name="email" value="<%=user.email%>">
+                <input type="text" placeholder="Phone" name="phone" value="<%=user.phone%>">
+                <input type="text" placeholder="Zipcode" name="zipcode" value="<%=user.zipcode%>">
                 <input type="file" name="photo">
                 <strong><%= typeof msg != 'undefined' ? msg : ''%></strong>
                 <br>

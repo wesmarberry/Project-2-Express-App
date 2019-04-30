@@ -40,6 +40,7 @@ router.get('/', async(req,res)=>{
 	  		const allPets = await Pet.find({});
 	  		res.render('pet/index.ejs',{
 	  			logged: req.session.logged,
+	  			id: req.session.userDbId,
 	  			pets: allPets
 	  		});
 	  }
