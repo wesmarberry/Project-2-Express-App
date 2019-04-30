@@ -221,14 +221,14 @@ router.post('/schedule', async (req, res, next) => {
 		console.log(userSender + '========= sender');
 		const userReceiver = await User.findById(req.body.petOwnerId)
 		console.log(userReceiver + '========= receiver');
-		foundPet.schedule.push(createdSchedule)
+		await foundPet.schedule.push(createdSchedule)
 		
 		mailer(userSender.email, userSender.username, userReceiver.email, 'Pet Request',
 		 ' would like to play with your pet! Send and email back to ' + userSender.email + ' and respond on the site!  Link: ')
 
 
 
-		foundPet.save()
+		await foundPet.save()
 		res.redirect('/pets/' + req.body.pet)
 
 
@@ -262,8 +262,8 @@ router.put('/schedule/:id',async(req,res,next)=>{
 			const foundPet = await Pet.findOne({schedule:req.body.scheduleId});
 			console.log(foundPet, "<<< ===== pet before splice");
 			const index = foundPet.schedule.indexOf(req.body.scheduleId)
-			foundPet.schedule.splice(index,1);
-			foundPet.save()
+			await foundPet.schedule.splice(index,1);
+			await foundPet.save()
 			console.log(foundPet, "<<< ===== pet after splice");
 			res.redirect('/pets/' + foundPet._id)
 		}

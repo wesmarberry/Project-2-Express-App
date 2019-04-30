@@ -415,6 +415,7 @@ footer{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	margin-bottom: 20px;
 }
 
 .footer {
@@ -422,7 +423,12 @@ footer{
 	color: white;
 	text-align: center;
 	height: 28px;
+	margin-top: 10px;
 
+}
+
+#delete-button {
+	margin-bottom: 30px;
 }
 
 .pets-li {

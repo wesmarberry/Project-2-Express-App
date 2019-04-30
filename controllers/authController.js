@@ -80,6 +80,9 @@ const getGoogleAccountFromCode = async(code)=> {
   const userGoogleEmail = me.data.emails && me.data.emails.length && me.data.emails[0].value;
   // console.log(userGooglegivenName);
   // return so we can login or sign up the user
+  console.log(userGooglegivenName + ' ============ givenname');
+  console.log(userGoogleName + ' ============ name');
+  console.log(userGoogleEmail + ' ============ email');
   return {
   	givenName: userGooglegivenName,
     name: userGoogleName,
@@ -105,7 +108,7 @@ router.get('/login', async(req, res, next) => {
 		
 		const code = req.query.code;
 		const userInfo = await getGoogleAccountFromCode(code)
-	
+		console.log(userInfo + ' ============= is user info');
 		// look for the user in the date base using email provided by the google API.
 
 		const userFound = await User.findOne({email:userInfo.email})

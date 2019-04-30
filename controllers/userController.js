@@ -271,8 +271,7 @@ router.get('/', async (req, res, next) => {
 		console.log(req.session.lng + ' =========== is user lng');
 		// console.log("x");
 		// console.log(x);
-		console.log(process.env.API_KEY);
-		console.log(process.env.SOURCE_EMAIL)
+
 		const foundPets = await Pet.find({})
 		res.render('user/index.ejs', {
 			pets: foundPets,
