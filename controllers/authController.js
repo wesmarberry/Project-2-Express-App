@@ -12,9 +12,9 @@ const fs = require('fs');
 // oUfUSqvakAGW6lK2mDWXBKGI
 
 const googleConfig = {
-  clientId: '271919295013-phr6n1c5ljcedojcgj6deh1e2u1epagc.apps.googleusercontent.com',
-  clientSecret: 'oUfUSqvakAGW6lK2mDWXBKGI',
-  redirect: 'http://localhost:3000/auth/login'
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+  redirect: process.env.CLIENT_ROUTE
 };
 
 const defaultScope = [
