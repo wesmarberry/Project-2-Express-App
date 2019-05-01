@@ -51,7 +51,7 @@
           console.log(petPositions + ' ============ are pet postions');
 
 
-          var map, infoWindow;
+          let map, infoWindow;
           function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
               center: {lat: 41.8781, lng: -87.6298},
@@ -63,7 +63,7 @@
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
               navigator.geolocation.getCurrentPosition(function(position) {
-                var pos = {
+                let pos = {
                   lat: position.coords.latitude,
                   lng: position.coords.longitude
                 };
@@ -109,7 +109,7 @@
           console.log(petPositions + ' ============ are pet postions');
 
 
-          var map, infoWindow;
+          let map, infoWindow;
           function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
               center: {lat: 41.8781, lng: -87.6298},
@@ -121,7 +121,7 @@
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
               navigator.geolocation.getCurrentPosition(function(position) {
-                var pos = {
+                let pos = {
                   lat: position.coords.latitude,
                   lng: position.coords.longitude
                 };

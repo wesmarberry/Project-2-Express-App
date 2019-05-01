@@ -11,7 +11,7 @@
 
 	<div class="dog-panel">
 		<h5 class='show-label'><%= pet.name%></h5>
-		<div class='show-label'><img class='pet-img' src="/pets/<%=pet._id%>/photo"></div>
+		<img class='pet-img' src="/pets/<%=pet._id%>/photo">
 <!-- 		<div><%= pet.petKind%></div> -->
 		<div class='show-label'>Age: <%= pet.age%></div>
 		<div class='show-label'>Breed: <%= pet.breed%></div>
@@ -84,7 +84,7 @@
         
 
 
-      var map, infoWindow;
+      let map, infoWindow;
       function initMap() {
         map = new google.maps.Map(document.getElementById('map1'), {
           center: {lat: 41.8781, lng: -87.6298},
@@ -96,7 +96,7 @@
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
+            let pos = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
@@ -143,7 +143,7 @@
    
 
 
-      var map, infoWindow;
+      let map, infoWindow;
       function initMap() {
         map = new google.maps.Map(document.getElementById('map1'), {
           center: {lat: 41.8781, lng: -87.6298},
@@ -155,7 +155,7 @@
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
+            let pos = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
