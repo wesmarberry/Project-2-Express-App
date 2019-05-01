@@ -2,43 +2,56 @@
 
 
 
-  
+  <div class="login-container">
+    
 
-  <h1>Login</h1>
-  <form action="/users/new" method="POST">
-    <input type="text" name="username" placeholder="username">
-    <input type="password" name="password" placeholder="password">
-    <button type="submit">Login</button>
-  </form>
-
-  <small><%=message%></small>
-
-  <h1>Register</h1>
-  <form action="/users/register" method="POST" enctype="multipart/form-data">
-      <input type="text" name="username" placeholder="username">
-      <input type="password" name="password" placeholder="password">
-      <input type="text" name="name" placeholder="name">
-      <input type="email" name="email" placeholder="email">
-      <input type="text" name="phone" placeholder="phone">
-      <input type="text" name="zipcode" placeholder="zipcode">
-      <input type="file" name="photo">
-      <input id='lat' type="hidden" name="lat">
-      <input id='lng' type="hidden" name="lng">
-      <button type="submit">Register</button><br>
-      <strong class='note'>NOTE: Your location where you register will be the location shown for all of your pets!!!</strong><br>
-      <strong><%= typeof msg != 'undefined' ? msg : ''%></strong>
+    <div class="login-panel">
       
-      <br>
-      <p>or:</p><br>
-              <!-- this is the google button -->
-        <!-- <div id="my-signin2"></div> -->
-        <div>
+      <h1>Login</h1>
+      <form class='login-form' action="/users/new" method="POST">
+        <input type="text" name="username" placeholder="username">
+        <input type="password" name="password" placeholder="password">
+        <button type="submit">Login</button>
+      </form>
+
+      <small><%=message%></small>
+      <p class='seperator'>or:</p><br>
+                  <!-- this is the google button -->
+            <!-- <div id="my-signin2"></div> -->
+            <!-- <div class="google-div"> -->
+              <form action='/auth/google' method='POST'>
+                <input id='lat1' type="hidden" name="lat">
+                <input id='lng1' type="hidden" name="lng">
+                <button id='google-button' type=submit><img id='google-button' src="https://www.fenton100.org/UserFiles/Servers/Server_286965/Templates/googleLogin.png"></button>
+              </form>
+              
+            <!-- </div> -->
+    </div>
+
+    <div class="register-panel">
+      
+      <h1>Register</h1>
+      <form class='register-form' action="/users/register" method="POST" enctype="multipart/form-data">
+          <input type="text" name="username" placeholder="username">
+          <input type="password" name="password" placeholder="password">
+          <input type="text" name="name" placeholder="name">
+          <input type="email" name="email" placeholder="email">
+          <input type="text" name="phone" placeholder="phone">
+          <input type="text" name="zipcode" placeholder="zipcode">
+          <input id='photo-input' type="file" name="photo">
+          <input id='lat' type="hidden" name="lat">
+          <input id='lng' type="hidden" name="lng">
+          <button type="submit">Register</button><br>
+          <strong class='note'>NOTE: Your location where you register <br>will be the location shown for all of your pets!!!</strong><br>
+          <strong><%= typeof msg != 'undefined' ? msg : ''%></strong>
           
-          <a id='google-button' href="/auth/googleurl">Log In With Google</a>
+          <br>
           
-        </div>
-        
-  </form>
+            
+      </form>
+      
+    </div>
+  </div>
         
 
   <script type="text/javascript">
@@ -46,6 +59,8 @@
       const latLong = data
       $('#lat').val(latLong.coords.latitude)
       $('#lng').val(latLong.coords.longitude)
+      $('#lat1').val(latLong.coords.latitude)
+      $('#lng1').val(latLong.coords.longitude)
       // console.log(latLong.coords.latitude);
       return latLong
 
