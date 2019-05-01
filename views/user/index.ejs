@@ -26,20 +26,25 @@
 <%if (pets.length > 0) {%>            
     <script type="text/javascript">
         const petPositions = []
-        console.log(<%=pets.length%>);
+        const petPositions1 = []
+        console.log(<%=pets[0].lat%>);
         console.log('javascript running');
         
+              
+
 
                for (let i = 0; i < <%=pets.length%>; i++) {
+                        
                        let petPosition = {
                            lat: <%=pets[i].lat%>,
                            lng: <%=pets[i].lng%>
                        }
                        petPositions.push(petPosition)
+                       console.log(petPosition);
+                        
 
-               
-
-                       <%=i++%>
+                       
+                       console.log(<%=i%>);
                    // }
                 }
 
@@ -70,6 +75,7 @@
                 map.setCenter(pos);
                 let marker = new google.maps.Marker({position: pos, map: map});
                 for (let i = 0; i < petPositions.length; i++) {
+                    console.log('pet marker made');
                     let petMarker = new google.maps.Marker({position: petPositions[i], map: map, icon: {
           url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
         } })
@@ -126,11 +132,11 @@
                 infoWindow.open(map);
                 map.setCenter(pos);
                 let marker = new google.maps.Marker({position: pos, map: map});
-                for (let i = 0; i < petPositions.length; i++) {
-                    let petMarker = new google.maps.Marker({position: petPositions[i], map: map, icon: {
-          url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        } })
-                }
+        //         for (let i = 0; i < petPositions.length; i++) {
+        //             let petMarker = new google.maps.Marker({position: petPositions[i], map: map, icon: {
+        //   url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        // } })
+        //         }
 
               }, function() {
                 handleLocationError(true, infoWindow, map.getCenter());

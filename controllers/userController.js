@@ -219,6 +219,7 @@ router.post('/new', async (req, res, next) => {
         req.session.username = req.body.username
         req.session.message = ''
         req.session.updated = ''
+        req.session.locationUpdated = ''
         req.session.lat = userExists.lat
 	    req.session.lng = userExists.lng
         // req.session.latLng = latLongFinder(userExists.zipcode)
@@ -273,6 +274,18 @@ router.get('/', async (req, res, next) => {
 		// console.log(x);
 
 		const foundPets = await Pet.find({})
+		console.log(foundPets + ' ========== found pets');
+		const petPositions = []
+		for (let i = 0; i < foundPets.length; i++) {
+			const petPosition = {
+				lat: foundPets[i].lat,
+				lng: foundPets[i].lng
+			}
+			petPositions.push(petPosition)
+		}
+		console.log(petPositions);
+
+
 		res.render('user/index.ejs', {
 			pets: foundPets,
 			logged: req.session.logged,
@@ -281,6 +294,7 @@ router.get('/', async (req, res, next) => {
 			API: process.env.API_KEY,
 			userLat: req.session.lat,
 			userLng: req.session.lng,
+			petPositions: petPositions,
 			i: 0
 		})
 	} catch (err) {
@@ -355,6 +369,13 @@ router.get('/:id/edit', async (req, res, next) => {
 		req.session.updatedMsg = ''
 	}
 
+	if (req.session.locationUpdated === true) {
+		req.session.locationUpdatedMsg = ' Your Home Location Was Updated!'
+		req.session.locationUpdated = false
+	} else {
+		req.session.locationUpdatedMsg = ''
+	}
+
 	try {
 		const foundUser = await User.findById(req.params.id).populate('pets').populate('reviews')
 		console.log(foundUser);
@@ -364,6 +385,7 @@ router.get('/:id/edit', async (req, res, next) => {
 			id: req.session.userDbId,
 			username: req.session.username,
 			updated: req.session.updatedMsg,
+			locationUpdated: req.session.locationUpdatedMsg,
 			API: process.env.API_KEY
 		})
 	} catch (err) {
@@ -400,6 +422,28 @@ router.put('/:id', upload.single('photo'), async (req, res, next) => {
 	} catch (err) {
 		next(err)
 	}	
+})
+
+// update location route
+router.post('/updateLocation', async (req, res, next) => {
+	try {
+		const foundUser = await User.findById(req.session.userDbId)
+		const foundPets = await Pet.find({owner: req.session.userDbId})
+		console.log(foundPets + '=========== found pets before');
+		foundUser.lat = req.body.lat
+		foundUser.lng = req.body.lng
+		for (let i = 0; i < foundPets.length; i++) {
+			foundPets[i].lat = req.body.lat
+			foundPets[i].lng = req.body.lng
+			foundPets[i].save()
+		}
+		console.log(foundPets + '=========== found pets after');
+		foundUser.save()
+		req.session.locationUpdated = true
+		res.redirect('/users/' + foundUser._id + '/edit')
+	} catch (err) {
+		next(err)
+	}
 })
 
 // delete route

@@ -70,7 +70,7 @@
 				<input type='hidden' name='petOwnerId' value='<%=pet.owner%>'>
 				<input type='hidden' name='proposerUsername' value='<%=loggedInUsername%>'>
 				<input type='hidden' name='pet' value='<%=pet._id%>'>
-				<button class='cool-propose-button' type="submit">Propose Time</button>
+				<button class='cool-propose-button' type="submit">Propose Time to Meet</button>
 			</form>
 		<%}%>
 	</div>
@@ -108,10 +108,10 @@
             map.setCenter(pos);
             let marker = new google.maps.Marker({position: pos, map: map});
 
-            let petMarker = new google.maps.Marker({position: petPosition, map: map, icon: {
-      url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"}
+      //       let petMarker = new google.maps.Marker({position: petPosition, map: map, icon: {
+      // url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"}
      
-            })
+      //       })
 
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
@@ -140,7 +140,7 @@
     }
  
    
-        console.log(petPositions + ' ============ are pet postions');
+   
 
 
       var map, infoWindow;
