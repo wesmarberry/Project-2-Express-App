@@ -25,6 +25,9 @@
           
 <%if (pets.length > 0) {%>            
     <script type="text/javascript">
+        const petLats = [<%=petLats%>]
+        const petLngs = [<%-petLngs%>]
+        console.log(petLats);
         const petPositions = []
         const petPositions1 = []
         console.log(<%=pets[0].lat%>);
@@ -33,19 +36,18 @@
               
 
 
-               for (let i = 0; i < <%=pets.length%>; i++) {
+               for (let i = 0; i < petLats.length; i++) {
                         
                        let petPosition = {
-                           lat: <%=pets[i].lat%>,
-                           lng: <%=pets[i].lng%>
+                           lat: petLats[i],
+                           lng: petLngs[i]
                        }
                        petPositions.push(petPosition)
                        console.log(petPosition);
                         
 
                        
-                       console.log(<%=i%>);
-                   // }
+                       
                 }
 
           console.log(petPositions + ' ============ are pet postions');

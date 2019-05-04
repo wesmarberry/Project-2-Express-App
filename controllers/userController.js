@@ -284,7 +284,18 @@ router.get('/', async (req, res, next) => {
 			petPositions.push(petPosition)
 		}
 		console.log(petPositions);
-
+		const petLats = []
+		for (let i = 0; i < foundPets.length; i++) {
+			const petLat = foundPets[i].lat
+			petLats.push(petLat)
+		}
+		console.log(petLats);
+		const petLngs = []
+		for (let i = 0; i < foundPets.length; i++) {
+			const petLng = foundPets[i].lng
+			petLngs.push(petLng)
+		}
+		console.log(petLngs);
 
 		res.render('user/index.ejs', {
 			pets: foundPets,
@@ -295,6 +306,8 @@ router.get('/', async (req, res, next) => {
 			userLat: req.session.lat,
 			userLng: req.session.lng,
 			petPositions: petPositions,
+			petLats: petLats,
+			petLngs: petLngs,
 			i: 0
 		})
 	} catch (err) {
