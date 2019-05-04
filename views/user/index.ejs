@@ -7,8 +7,11 @@
             <ul class='pets-ul'>
                 <% for(let i = 0; i < pets.length; i++){ %>
                     <li class='pets-li'>
+                        <div class='index-li'>
+                            
                         <a href="/pets/<%=pets[i]._id%>"><img class='pet-img' src="/pets/<%=pets[i]._id%>/photo"></a></br>
                         <button class='cool-button' id='index-button' onclick="window.location.href = '/pets/<%=pets[i]._id%>';">View Pet</button>
+                        </div>
                     </li>
                     
                 <% } %>
