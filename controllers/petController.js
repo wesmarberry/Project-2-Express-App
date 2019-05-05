@@ -224,7 +224,7 @@ router.post('/schedule', async (req, res, next) => {
 		await foundPet.schedule.push(createdSchedule)
 		
 		mailer(userSender.email, userSender.username, userReceiver.email, 'Pet Request',
-		 ' would like to play with your pet! Send and email back to ' + userSender.email + ' and respond on the site!  Link: ')
+		 ' would like to play with your pet! Send and email back to ' + userSender.email + ' and respond on the site!  Link: https://petfinder-wesmarberry.herokuapp.com/')
 
 
 
@@ -247,7 +247,7 @@ router.put('/schedule/:id',async(req,res,next)=>{
 			const userReceiver = await User.findById(updatedSchedule.proposerId)
 			console.log(updatedSchedule, "<<< ===== schedule updated");
 			mailer(userSender.email, userSender.username, userReceiver.email, 'Pet Request',
-		 ' ACCEPTED your request to play with their pet! Send and email back to ' + userSender.email + ' and get the details on where to meet!  Link: ')
+		 ' ACCEPTED your request to play with their pet! Send and email back to ' + userSender.email + ' and get the details on where to meet!  Link: https://petfinder-wesmarberry.herokuapp.com/')
 
 			res.redirect('/pets/' + updatedSchedule.pet)
 		}
@@ -258,7 +258,7 @@ router.put('/schedule/:id',async(req,res,next)=>{
 			const userSender = await User.findById(deletedSchedule.petOwnerId)
 			const userReceiver = await User.findById(deletedSchedule.proposerId)
 			mailer(userSender.email, userSender.username, userReceiver.email, 'Pet Request',
-		 ' DECLINED your request to play with their pet :( . Send and email back to ' + userSender.email + ' or return to the site to propose a new time!  Link: ')
+		 ' DECLINED your request to play with their pet :( . Send and email back to ' + userSender.email + ' or return to the site to propose a new time!  Link: https://petfinder-wesmarberry.herokuapp.com/')
 			const foundPet = await Pet.findOne({schedule:req.body.scheduleId});
 			console.log(foundPet, "<<< ===== pet before splice");
 			const index = foundPet.schedule.indexOf(req.body.scheduleId)
